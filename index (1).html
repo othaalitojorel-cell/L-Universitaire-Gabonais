@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StatGabon — Statistiques officielles du Gabon</title>
+  <meta name="description" content="Portail officiel des données statistiques du Gabon. Indicateurs économiques, démographiques et sociaux." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='11' fill='%23009A44'/><rect y='11' width='32' height='10' fill='%23FCD116'/><rect y='21' width='32' height='11' fill='%23003189'/></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-dark: #0f2d1c;
+      --green-mid: #1a4a2e;
+      --green-light: #0f6e56;
+      --gold: #FCD116;
+      --gold-dark: #c8a000;
+      --gold-muted: #854f0b;
+      --blue-mid: #185fa5;
+      --red: #a32d2d;
+      --text: #1a1a1a;
+      --text-secondary: #555;
+      --bg: #f4f5f2;
+      --bg-card: #ffffff;
+      --border: rgba(0,0,0,0.1);
+      --radius: 10px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text: #e8e8e4;
+        --text-secondary: #999;
+        --bg: #141a11;
+        --bg-card: #1e2a1e;
+        --border: rgba(255,255,255,0.1);
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Source Sans 3', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    .topbar { background: var(--green-dark); color: rgba(255,255,255,0.6); font-size: 12px; padding: 7px 32px; display: flex; justify-content: space-between; align-items: center; }
+    .topbar a { color: rgba(255,255,255,0.6); text-decoration: none; margin-left: 20px; }
+    .topbar a:hover { color: var(--gold); }
+
+    header { background: var(--green-mid); padding: 18px 32px 0; }
+    .brand { display: flex; align-items: center; gap: 18px; padding-bottom: 18px; }
+    .flag { display: flex; width: 52px; height: 34px; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.35); flex-shrink: 0; }
+    .flag-stripe { flex: 1; }
+    .brand-text h1 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: #fff; }
+    .brand-text p { font-size: 12px; color: rgba(255,255,255,0.55); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 300; }
+
+    nav { display: flex; border-top: 1px solid rgba(255,255,255,0.1); overflow-x: auto; }
+    nav::-webkit-scrollbar { display: none; }
+    .nav-item { padding: 12px 20px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.7); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color 0.15s; text-decoration: none; display: block; }
+    .nav-item:hover { color: #fff; }
+    .nav-item.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    .hero { background: linear-gradient(135deg, var(--green-mid) 0%, var(--green-light) 100%); padding: 36px 32px 32px; color: #fff; }
+    .hero h2 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 400; margin-bottom: 6px; }
+    .hero p { font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 20px; max-width: 520px; }
+    .search-bar { display: flex; max-width: 540px; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
+    .search-bar input { flex: 1; border: none; padding: 12px 16px; font-size: 14px; font-family: inherit; background: rgba(255,255,255,0.97); color: #1a1a1a; outline: none; }
+    .search-bar button { background: var(--gold); color: var(--green-dark); border: none; padding: 12px 22px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; }
+    .search-bar button:hover { background: #e8b800; }
+
+    main { max-width: 1000px; margin: 0 auto; padding: 28px 32px 48px; }
+
+    .subpage { display: none; }
+    .subpage.active { display: block; }
+
+    .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .update-badge { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; color: var(--text-secondary); margin-bottom: 20px; }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green-light); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 28px; }
+    .kpi-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; position: relative; overflow: hidden; transition: transform 0.15s; }
+    .kpi-card:hover { transform: translateY(-2px); }
+    .kpi-card::before { content:''; position:absolute; top:0;left:0;right:0;height:3px; }
+    .kpi-card.c-green::before { background: var(--green-light); }
+    .kpi-card.c-gold::before  { background: var(--gold-dark); }
+    .kpi-card.c-blue::before  { background: var(--blue-mid); }
+    .kpi-card.c-red::before   { background: var(--red); }
+    .kpi-label { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px; }
+    .kpi-value { font-size: 26px; font-weight: 600; font-family: 'Playfair Display', serif; line-height: 1; margin-bottom: 6px; }
+    .kpi-card.c-green .kpi-value { color: var(--green-mid); }
+    .kpi-card.c-gold  .kpi-value { color: var(--gold-muted); }
+    .kpi-card.c-blue  .kpi-value { color: var(--blue-mid); }
+    .kpi-card.c-red   .kpi-value { color: var(--red); }
+    @media (prefers-color-scheme: dark) {
+      .kpi-card.c-green .kpi-value { color: #5dcaa5; }
+      .kpi-card.c-gold  .kpi-value { color: #fac775; }
+      .kpi-card.c-blue  .kpi-value { color: #85b7eb; }
+      .kpi-card.c-red   .kpi-value { color: #f09595; }
+    }
+    .kpi-meta { font-size: 12px; color: var(--text-secondary); }
+    .up { color: var(--green-light); font-weight: 600; }
+    .down { color: var(--red); font-weight: 600; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+    @media (max-width: 620px) { .two-col { grid-template-columns: 1fr; } }
+    .chart-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+    .chart-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .chart-card .sub { font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; }
+    .sector-rows { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+    .sector-row { display: flex; align-items: center; gap: 10px; }
+    .sector-name { font-size: 12px; color: var(--text-secondary); width: 76px; flex-shrink: 0; }
+    .bar-wrap { flex: 1; height: 14px; background: var(--bg); border-radius: 4px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 4px; }
+    .sector-pct { font-size: 12px; font-weight: 600; width: 36px; text-align: right; }
+
+    .topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 28px; }
+    .topic-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; color: var(--text); display: flex; flex-direction: column; gap: 8px; transition: border-color 0.15s, transform 0.15s; }
+    .topic-card:hover { border-color: var(--green-light); transform: translateY(-1px); }
+    .topic-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .ti-green  { background: #e1f5ee; color: #0f6e56; }
+    .ti-gold   { background: #faeeda; color: #854f0b; }
+    .ti-blue   { background: #e6f1fb; color: #185fa5; }
+    .ti-red    { background: #fcebeb; color: #a32d2d; }
+    .ti-purple { background: #eeedfe; color: #534ab7; }
+    .topic-name { font-size: 14px; font-weight: 600; }
+    .topic-desc { font-size: 12px; color: var(--text-secondary); }
+
+    .releases { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 28px; }
+    .release-item { display: flex; align-items: center; gap: 16px; padding: 14px 18px; background: var(--bg-card); border-bottom: 1px solid var(--border); }
+    .release-item:last-child { border-bottom: none; }
+    .release-item:hover { background: var(--bg); }
+    .release-date { font-size: 11px; color: var(--text-secondary); white-space: nowrap; min-width: 68px; }
+    .release-info { flex: 1; }
+    .release-info h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .release-info p { font-size: 12px; color: var(--text-secondary); }
+    .tag { font-size: 10px; font-weight: 700; letter-spacing: 0.05em; padding: 3px 10px; border-radius: 20px; flex-shrink: 0; }
+    .tag-new      { background: #e1f5ee; color: #0f6e56; }
+    .tag-upcoming { background: #faeeda; color: #854f0b; }
+
+    /* SUBPAGES */
+    .breadcrumb { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
+    .breadcrumb span { cursor: pointer; color: var(--green-light); }
+    .breadcrumb span:hover { text-decoration: underline; }
+    .page-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 400; margin-bottom: 6px; }
+    .page-intro { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; max-width: 640px; line-height: 1.6; }
+
+    .subcat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-bottom: 28px; }
+    .subcat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; cursor: pointer; color: var(--text); display: flex; flex-direction: column; gap: 6px; transition: border-color 0.15s, transform 0.15s; }
+    .subcat-card:hover { border-color: var(--green-light); transform: translateY(-2px); }
+    .subcat-icon { font-size: 26px; margin-bottom: 4px; }
+    .subcat-name { font-size: 15px; font-weight: 600; }
+    .subcat-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; flex: 1; }
+    .subcat-arrow { font-size: 12px; color: var(--green-light); font-weight: 600; margin-top: 8px; }
+
+    .stat-row { background: var(--bg-card); border: 1px solid var(--border); border-left: 4px solid var(--green-light); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .stat-row h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .stat-row p { font-size: 12px; color: var(--text-secondary); }
+    .stat-val { font-size: 24px; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--green-mid); flex-shrink: 0; }
+    @media (prefers-color-scheme: dark) { .stat-val { color: #5dcaa5; } }
+
+    footer { background: var(--green-dark); color: rgba(255,255,255,0.5); font-size: 12px; padding: 24px 32px; }
+    .footer-inner { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; margin-left: 20px; }
+    .footer-links a:hover { color: var(--gold); }
+
+    @media (max-width: 600px) {
+      .topbar { display: none; }
+      header, .hero, main { padding-left: 16px; padding-right: 16px; }
+      .hero h2 { font-size: 20px; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <span>République Gabonaise — Portail officiel des données statistiques</span>
+    <div>
+      <a href="#">Français</a>
+      <a href="#">English</a>
+      <a href="mailto:contact@statgabon.com">Contact</a>
+    </div>
+  </div>
+
+  <header>
+    <div class="brand">
+      <div class="flag">
+        <div class="flag-stripe" style="background:#009A44;"></div>
+        <div class="flag-stripe" style="background:#FCD116;"></div>
+        <div class="flag-stripe" style="background:#003189;"></div>
+      </div>
+      <div class="brand-text">
+        <h1>StatGabon</h1>
+        <p>Direction Générale de la Statistique — DGST</p>
+      </div>
+    </div>
+    <nav>
+      <a class="nav-item active" href="#" data-page="home">Accueil</a>
+      <a class="nav-item" href="#" data-page="economie">Économie</a>
+      <a class="nav-item" href="#" data-page="population">Population</a>
+      <a class="nav-item" href="#" data-page="emploi">Emploi</a>
+      <a class="nav-item" href="#" data-page="sante">Santé</a>
+      <a class="nav-item" href="#" data-page="environnement">Environnement</a>
+      <a class="nav-item" href="#" data-page="donnees">Données</a>
+      <a class="nav-item" href="#" data-page="publications">Publications</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2 id="hero-title">Données statistiques officielles du Gabon</h2>
+    <p id="hero-sub">Accédez aux indicateurs économiques, démographiques et sociaux produits par la Direction Générale de la Statistique.</p>
+    <div class="search-bar">
+      <input type="search" placeholder="Rechercher un indicateur, une publication…" />
+      <button type="button"><i class="ti ti-search"></i> Rechercher</button>
+    </div>
+  </section>
+
+  <main>
+
+    <!-- HOME -->
+    <div id="page-home" class="subpage active">
+      <div class="update-badge"><div class="live-dot"></div>Dernière mise à jour : Mai 2026</div>
+      <p class="section-label">Indicateurs clés — 2024</p>
+      <div class="kpi-grid">
+        <div class="kpi-card c-green"><div class="kpi-label">PIB nominal</div><div class="kpi-value">$20.5B</div><div class="kpi-meta"><span class="up">▲ 3.1%</span> croissance 2024</div></div>
+        <div class="kpi-card c-gold"><div class="kpi-label">PIB par habitant</div><div class="kpi-value">$8 705</div><div class="kpi-meta">USD courants, 2024</div></div>
+        <div class="kpi-card c-blue"><div class="kpi-label">Population</div><div class="kpi-value">2.54M</div><div class="kpi-meta"><span class="up">▲ 2.2%</span> par an</div></div>
+        <div class="kpi-card c-green"><div class="kpi-label">Inflation</div><div class="kpi-value">1.2%</div><div class="kpi-meta"><span class="down">▼</span> vs 3.6% en 2023</div></div>
+        <div class="kpi-card c-red"><div class="kpi-label">Chômage</div><div class="kpi-value">20.1%</div><div class="kpi-meta">Jeunes : 36.0%</div></div>
+        <div class="kpi-card c-gold"><div class="kpi-label">Espérance de vie</div><div class="kpi-value">69 ans</div><div class="kpi-meta">2024</div></div>
+        <div class="kpi-card c-blue"><div class="kpi-label">IDH</div><div class="kpi-value">0.733</div><div class="kpi-meta">108e / 193 pays</div></div>
+        <div class="kpi-card c-green"><div class="kpi-label">Couverture forestière</div><div class="kpi-value">88%</div><div class="kpi-meta">du territoire national</div></div>
+      </div>
+      <div class="two-col">
+        <div class="chart-card">
+          <h3>Croissance du PIB réel (%)</h3>
+          <p class="sub">Évolution annuelle 2019–2024</p>
+          <div style="position:relative;height:200px;"><canvas id="gdpChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Structure du PIB par secteur</h3>
+          <p class="sub">Répartition estimée 2024</p>
+          <div class="sector-rows">
+            <div class="sector-row"><span class="sector-name">Pétrole</span><div class="bar-wrap"><div class="bar-fill" style="width:46%;background:#1a4a2e;"></div></div><span class="sector-pct">46%</span></div>
+            <div class="sector-row"><span class="sector-name">Services</span><div class="bar-wrap"><div class="bar-fill" style="width:37%;background:#185fa5;"></div></div><span class="sector-pct">37%</span></div>
+            <div class="sector-row"><span class="sector-name">Mines</span><div class="bar-wrap"><div class="bar-fill" style="width:8%;background:#c8a000;"></div></div><span class="sector-pct">8%</span></div>
+            <div class="sector-row"><span class="sector-name">Forêt/Bois</span><div class="bar-wrap"><div class="bar-fill" style="width:5%;background:#0f6e56;"></div></div><span class="sector-pct">5%</span></div>
+            <div class="sector-row"><span class="sector-name">Agriculture</span><div class="bar-wrap"><div class="bar-fill" style="width:4%;background:#854f0b;"></div></div><span class="sector-pct">4%</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="section-label">Thèmes statistiques</p>
+      <div class="topics-grid">
+        <div class="topic-card" onclick="navigate('population')"><div class="topic-icon ti-blue"><i class="ti ti-users"></i></div><div class="topic-name">Population</div><div class="topic-desc">Recensements, migrations, démographie</div></div>
+        <div class="topic-card" onclick="navigate('economie')"><div class="topic-icon ti-green"><i class="ti ti-chart-bar"></i></div><div class="topic-name">Économie</div><div class="topic-desc">PIB, comptes nationaux, prix</div></div>
+        <div class="topic-card" onclick="navigate('emploi')"><div class="topic-icon ti-gold"><i class="ti ti-briefcase"></i></div><div class="topic-name">Emploi</div><div class="topic-desc">Chômage, salaires, activité</div></div>
+        <div class="topic-card" onclick="navigate('sante')"><div class="topic-icon ti-red"><i class="ti ti-heart-rate-monitor"></i></div><div class="topic-name">Santé</div><div class="topic-desc">Mortalité, morbidité, services</div></div>
+        <div class="topic-card" onclick="navigate('sante')"><div class="topic-icon ti-purple"><i class="ti ti-school"></i></div><div class="topic-name">Éducation</div><div class="topic-desc">Scolarisation, alphabétisation</div></div>
+        <div class="topic-card" onclick="navigate('environnement')"><div class="topic-icon ti-green"><i class="ti ti-leaf"></i></div><div class="topic-name">Environnement</div><div class="topic-desc">Forêts, ressources naturelles</div></div>
+        <div class="topic-card" onclick="navigate('donnees')"><div class="topic-icon ti-blue"><i class="ti ti-ship"></i></div><div class="topic-name">Commerce</div><div class="topic-desc">Exports, imports, balance</div></div>
+        <div class="topic-card" onclick="navigate('donnees')"><div class="topic-icon ti-gold"><i class="ti ti-bolt"></i></div><div class="topic-name">Énergie</div><div class="topic-desc">Pétrole, électricité, accès</div></div>
+      </div>
+      <p class="section-label">Dernières publications</p>
+      <div class="releases">
+        <div class="release-item"><div class="release-date">Avr 2026</div><div class="release-info"><h4>Comptes nationaux — 4e trimestre 2024</h4><p>PIB, consommation, investissement et épargne nationale</p></div><span class="tag tag-new">Nouveau</span></div>
+        <div class="release-item"><div class="release-date">Mar 2026</div><div class="release-info"><h4>Enquête sur l'emploi et le chômage 2024</h4><p>Taux d'activité, chômage par âge et par genre</p></div><span class="tag tag-new">Nouveau</span></div>
+        <div class="release-item"><div class="release-date">Fév 2026</div><div class="release-info"><h4>Rapport sur les prix à la consommation — 2024</h4><p>Indice des prix et analyse de l'inflation annuelle</p></div><span class="tag tag-new">Nouveau</span></div>
+        <div class="release-item"><div class="release-date">Juin 2026</div><div class="release-info"><h4>Recensement général de la population (RGPH) 2026</h4><p>Résultats provisoires attendus</p></div><span class="tag tag-upcoming">À venir</span></div>
+        <div class="release-item"><div class="release-date">Sep 2026</div><div class="release-info"><h4>Rapport annuel sur le développement humain</h4><p>IDH, pauvreté, inégalités et bien-être</p></div><span class="tag tag-upcoming">À venir</span></div>
+      </div>
+    </div>
+
+    <!-- ÉCONOMIE -->
+    <div id="page-economie" class="subpage">
+      <div class="breadcrumb"><span onclick="navigate('home')">Accueil</span> › Économie</div>
+      <h2 class="page-title">Économie</h2>
+      <p class="page-intro">Indicateurs macroéconomiques, comptes nationaux, commerce extérieur et finances publiques du Gabon.</p>
+      <p class="section-label">Sous-thèmes</p>
+      <div class="subcat-grid">
+        <div class="subcat-card"><div class="subcat-icon">📊</div><div class="subcat-name">Comptes nationaux</div><div class="subcat-desc">PIB trimestriel et annuel, croissance économique, valeur ajoutée par secteur.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">💰</div><div class="subcat-name">Prix et inflation</div><div class="subcat-desc">Indice des prix à la consommation (IPC), inflation annuelle, prix à la production.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🏦</div><div class="subcat-name">Finances publiques</div><div class="subcat-desc">Budget de l'État, recettes pétrolières, dette publique et dépenses gouvernementales.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🚢</div><div class="subcat-name">Commerce extérieur</div><div class="subcat-desc">Exportations, importations, balance commerciale, principaux partenaires.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🛢️</div><div class="subcat-name">Secteur pétrolier</div><div class="subcat-desc">Production pétrolière, réserves, revenus, exportations d'hydrocarbures.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🪵</div><div class="subcat-name">Forêt & Bois</div><div class="subcat-desc">Exploitation forestière, exportations de bois, reboisement, concessions.</div><div class="subcat-arrow">Consulter →</div></div>
+      </div>
+      <p class="section-label">Indicateurs clés</p>
+      <div class="stat-row"><div><h4>PIB nominal</h4><p>USD courants, 2024</p></div><div class="stat-val">$20.5B</div></div>
+      <div class="stat-row"><div><h4>Croissance du PIB réel</h4><p>Variation annuelle 2024</p></div><div class="stat-val">+3.1%</div></div>
+      <div class="stat-row"><div><h4>Inflation (IPC)</h4><p>Variation annuelle 2024</p></div><div class="stat-val">1.2%</div></div>
+      <div class="stat-row"><div><h4>Balance commerciale</h4><p>Exports – Imports, 2023</p></div><div class="stat-val">+$2.3B</div></div>
+      <div class="stat-row"><div><h4>Recettes pétrolières</h4><p>Part du budget, 2024</p></div><div class="stat-val">58%</div></div>
+    </div>
+
+    <!-- POPULATION -->
+    <div id="page-population" class="subpage">
+      <div class="breadcrumb"><span onclick="navigate('home')">Accueil</span> › Population</div>
+      <h2 class="page-title">Population</h2>
+      <p class="page-intro">Données démographiques, recensements, migrations et répartition géographique de la population gabonaise.</p>
+      <p class="section-label">Sous-thèmes</p>
+      <div class="subcat-grid">
+        <div class="subcat-card"><div class="subcat-icon">🏙️</div><div class="subcat-name">Recensements</div><div class="subcat-desc">Résultats du RGPH, répartition par province, densité et urbanisation.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">👶</div><div class="subcat-name">Démographie</div><div class="subcat-desc">Taux de natalité, mortalité infantile, fécondité et pyramides des âges.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🚶</div><div class="subcat-name">Migrations</div><div class="subcat-desc">Flux migratoires, diaspora gabonaise, immigration et émigration.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🏘️</div><div class="subcat-name">Ménages</div><div class="subcat-desc">Taille des ménages, conditions de logement, accès à l'eau et électricité.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">👥</div><div class="subcat-name">Ethnicité & Langues</div><div class="subcat-desc">Groupes ethniques, langues nationales et répartition culturelle.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🗺️</div><div class="subcat-name">Répartition géographique</div><div class="subcat-desc">Population par province, département et commune.</div><div class="subcat-arrow">Consulter →</div></div>
+      </div>
+      <p class="section-label">Indicateurs clés</p>
+      <div class="stat-row"><div><h4>Population totale</h4><p>Estimation 2024</p></div><div class="stat-val">2.54M</div></div>
+      <div class="stat-row"><div><h4>Croissance démographique</h4><p>Taux annuel</p></div><div class="stat-val">2.2%</div></div>
+      <div class="stat-row"><div><h4>Taux d'urbanisation</h4><p>Population en zone urbaine</p></div><div class="stat-val">90%</div></div>
+      <div class="stat-row"><div><h4>Âge médian</h4><p>Estimation 2024</p></div><div class="stat-val">22 ans</div></div>
+      <div class="stat-row"><div><h4>Densité</h4><p>Habitants / km²</p></div><div class="stat-val">9.5</div></div>
+    </div>
+
+    <!-- EMPLOI -->
+    <div id="page-emploi" class="subpage">
+      <div class="breadcrumb"><span onclick="navigate('home')">Accueil</span> › Emploi</div>
+      <h2 class="page-title">Emploi & Marché du travail</h2>
+      <p class="page-intro">Données sur l'emploi, le chômage, les salaires et les conditions de travail au Gabon.</p>
+      <p class="section-label">Sous-thèmes</p>
+      <div class="subcat-grid">
+        <div class="subcat-card"><div class="subcat-icon">📉</div><div class="subcat-name">Chômage</div><div class="subcat-desc">Taux de chômage national, par genre, groupe d'âge et province.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">💼</div><div class="subcat-name">Emploi formel</div><div class="subcat-desc">Effectifs dans la fonction publique, secteur privé et entreprises parapubliques.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🧑‍🌾</div><div class="subcat-name">Secteur informel</div><div class="subcat-desc">Part de l'emploi informel, petits métiers, auto-entrepreneurs.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">💵</div><div class="subcat-name">Salaires</div><div class="subcat-desc">SMIG, salaires moyens par secteur, évolution du pouvoir d'achat.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">👩‍💻</div><div class="subcat-name">Emploi des jeunes</div><div class="subcat-desc">Chômage des 15–35 ans, insertion professionnelle, formation.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">⚖️</div><div class="subcat-name">Égalité de genre</div><div class="subcat-desc">Taux d'activité féminine, écarts de salaires, emploi des femmes.</div><div class="subcat-arrow">Consulter →</div></div>
+      </div>
+      <p class="section-label">Indicateurs clés</p>
+      <div class="stat-row"><div><h4>Taux de chômage</h4><p>National, 2024</p></div><div class="stat-val">20.1%</div></div>
+      <div class="stat-row"><div><h4>Chômage des jeunes</h4><p>15–35 ans, 2024</p></div><div class="stat-val">36%</div></div>
+      <div class="stat-row"><div><h4>Taux d'activité</h4><p>Population active / pop. en âge de travailler</p></div><div class="stat-val">52%</div></div>
+      <div class="stat-row"><div><h4>SMIG</h4><p>Salaire minimum mensuel</p></div><div class="stat-val">150 000 XAF</div></div>
+    </div>
+
+    <!-- SANTÉ -->
+    <div id="page-sante" class="subpage">
+      <div class="breadcrumb"><span onclick="navigate('home')">Accueil</span> › Santé</div>
+      <h2 class="page-title">Santé</h2>
+      <p class="page-intro">Statistiques sur la santé publique, la mortalité, les maladies et les services de santé au Gabon.</p>
+      <p class="section-label">Sous-thèmes</p>
+      <div class="subcat-grid">
+        <div class="subcat-card"><div class="subcat-icon">❤️</div><div class="subcat-name">Espérance de vie</div><div class="subcat-desc">Espérance de vie à la naissance, par sexe, évolution historique.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">👶</div><div class="subcat-name">Mortalité infantile</div><div class="subcat-desc">Mortalité néonatale, infantile et des moins de 5 ans.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🦟</div><div class="subcat-name">Maladies</div><div class="subcat-desc">Paludisme, VIH/SIDA, tuberculose, maladies non transmissibles.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🏥</div><div class="subcat-name">Infrastructures sanitaires</div><div class="subcat-desc">Hôpitaux, centres de santé, personnel médical par province.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">💉</div><div class="subcat-name">Vaccination</div><div class="subcat-desc">Couverture vaccinale, programmes nationaux d'immunisation.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🤰</div><div class="subcat-name">Santé maternelle</div><div class="subcat-desc">Mortalité maternelle, accouchements assistés, soins prénataux.</div><div class="subcat-arrow">Consulter →</div></div>
+      </div>
+      <p class="section-label">Indicateurs clés</p>
+      <div class="stat-row"><div><h4>Espérance de vie</h4><p>2024</p></div><div class="stat-val">69 ans</div></div>
+      <div class="stat-row"><div><h4>Mortalité infantile</h4><p>Pour 1 000 naissances vivantes</p></div><div class="stat-val">37‰</div></div>
+      <div class="stat-row"><div><h4>Prévalence VIH/SIDA</h4><p>Adultes 15–49 ans</p></div><div class="stat-val">3.4%</div></div>
+      <div class="stat-row"><div><h4>Couverture vaccinale DTP3</h4><p>Enfants &lt; 1 an</p></div><div class="stat-val">74%</div></div>
+    </div>
+
+    <!-- ENVIRONNEMENT -->
+    <div id="page-environnement" class="subpage">
+      <div class="breadcrumb"><span onclick="navigate('home')">Accueil</span> › Environnement</div>
+      <h2 class="page-title">Environnement & Ressources naturelles</h2>
+      <p class="page-intro">Le Gabon, l'un des pays les plus boisés au monde, dispose de ressources naturelles exceptionnelles.</p>
+      <p class="section-label">Sous-thèmes</p>
+      <div class="subcat-grid">
+        <div class="subcat-card"><div class="subcat-icon">🌳</div><div class="subcat-name">Forêts</div><div class="subcat-desc">Couverture forestière, déforestation, aires protégées et biodiversité.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🛢️</div><div class="subcat-name">Ressources pétrolières</div><div class="subcat-desc">Réserves prouvées, production, impact environnemental offshore.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🌊</div><div class="subcat-name">Ressources en eau</div><div class="subcat-desc">Fleuves, bassins versants, accès à l'eau potable et assainissement.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🌡️</div><div class="subcat-name">Climat</div><div class="subcat-desc">Températures, précipitations, changement climatique et émissions CO₂.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🐘</div><div class="subcat-name">Biodiversité</div><div class="subcat-desc">Faune, flore, parcs nationaux, espèces protégées.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">⛏️</div><div class="subcat-name">Mines & Minéraux</div><div class="subcat-desc">Manganèse, fer, or et autres ressources minières.</div><div class="subcat-arrow">Consulter →</div></div>
+      </div>
+      <p class="section-label">Indicateurs clés</p>
+      <div class="stat-row"><div><h4>Couverture forestière</h4><p>Part du territoire national</p></div><div class="stat-val">88%</div></div>
+      <div class="stat-row"><div><h4>Aires protégées</h4><p>Parcs nationaux (surface)</p></div><div class="stat-val">11.3%</div></div>
+      <div class="stat-row"><div><h4>Émissions CO₂</h4><p>Tonnes par habitant, 2022</p></div><div class="stat-val">2.7 t</div></div>
+      <div class="stat-row"><div><h4>Production de manganèse</h4><p>Millions de tonnes, 2023</p></div><div class="stat-val">7.2M t</div></div>
+    </div>
+
+    <!-- DONNÉES -->
+    <div id="page-donnees" class="subpage">
+      <div class="breadcrumb"><span onclick="navigate('home')">Accueil</span> › Données</div>
+      <h2 class="page-title">Données ouvertes</h2>
+      <p class="page-intro">Téléchargez les jeux de données officiels du Gabon en formats CSV, Excel et JSON.</p>
+      <p class="section-label">Jeux de données disponibles</p>
+      <div class="subcat-grid">
+        <div class="subcat-card"><div class="subcat-icon">📥</div><div class="subcat-name">PIB trimestriel</div><div class="subcat-desc">Série longue PIB nominal et réel depuis 2000. Format CSV & XLSX.</div><div class="subcat-arrow">Télécharger →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">📥</div><div class="subcat-name">Indices des prix</div><div class="subcat-desc">IPC mensuel par catégorie de produits depuis 2010.</div><div class="subcat-arrow">Télécharger →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">📥</div><div class="subcat-name">Données démographiques</div><div class="subcat-desc">Population par province, âge et sexe — RGPH 2013 et projections 2024.</div><div class="subcat-arrow">Télécharger →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">📥</div><div class="subcat-name">Emploi et chômage</div><div class="subcat-desc">Enquêtes annuelles sur l'emploi 2018–2024.</div><div class="subcat-arrow">Télécharger →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">📥</div><div class="subcat-name">Commerce extérieur</div><div class="subcat-desc">Exports et imports par produit et partenaire, 2010–2024.</div><div class="subcat-arrow">Télécharger →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">🔌</div><div class="subcat-name">API Statistiques</div><div class="subcat-desc">Accès programmatique aux données via REST API. Documentation disponible.</div><div class="subcat-arrow">Documentation →</div></div>
+      </div>
+    </div>
+
+    <!-- PUBLICATIONS -->
+    <div id="page-publications" class="subpage">
+      <div class="breadcrumb"><span onclick="navigate('home')">Accueil</span> › Publications</div>
+      <h2 class="page-title">Publications & Rapports</h2>
+      <p class="page-intro">Rapports officiels, bulletins statistiques et études thématiques publiés par la DGST.</p>
+      <p class="section-label">Types de publications</p>
+      <div class="subcat-grid">
+        <div class="subcat-card"><div class="subcat-icon">📕</div><div class="subcat-name">Annuaire statistique</div><div class="subcat-desc">Publication annuelle regroupant les principaux indicateurs du Gabon.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">📗</div><div class="subcat-name">Bulletins trimestriels</div><div class="subcat-desc">Conjoncture économique et tableau de bord des indicateurs clés.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">📘</div><div class="subcat-name">Rapports thématiques</div><div class="subcat-desc">Études approfondies sur l'emploi, la pauvreté, la santé, l'éducation.</div><div class="subcat-arrow">Consulter →</div></div>
+        <div class="subcat-card"><div class="subcat-icon">📙</div><div class="subcat-name">Notes de conjoncture</div><div class="subcat-desc">Analyses flash mensuelles sur l'évolution des prix et de l'activité.</div><div class="subcat-arrow">Consulter →</div></div>
+      </div>
+      <p class="section-label">Toutes les publications</p>
+      <div class="releases">
+        <div class="release-item"><div class="release-date">Avr 2026</div><div class="release-info"><h4>Comptes nationaux — 4e trimestre 2024</h4><p>PIB, consommation, investissement et épargne nationale</p></div><span class="tag tag-new">Nouveau</span></div>
+        <div class="release-item"><div class="release-date">Mar 2026</div><div class="release-info"><h4>Enquête sur l'emploi et le chômage 2024</h4><p>Taux d'activité, chômage par âge et par genre</p></div><span class="tag tag-new">Nouveau</span></div>
+        <div class="release-item"><div class="release-date">Fév 2026</div><div class="release-info"><h4>Rapport sur les prix à la consommation — 2024</h4><p>Indice des prix et analyse de l'inflation annuelle</p></div><span class="tag tag-new">Nouveau</span></div>
+        <div class="release-item"><div class="release-date">Jan 2026</div><div class="release-info"><h4>Tableau de bord économique — 2025</h4><p>Indicateurs macroéconomiques et projections</p></div><span class="tag tag-new">Nouveau</span></div>
+        <div class="release-item"><div class="release-date">Déc 2025</div><div class="release-info"><h4>Annuaire statistique du Gabon 2025</h4><p>Publication annuelle complète de tous les indicateurs</p></div><span class="tag tag-new">Nouveau</span></div>
+        <div class="release-item"><div class="release-date">Juin 2026</div><div class="release-info"><h4>Recensement général de la population (RGPH) 2026</h4><p>Résultats provisoires attendus</p></div><span class="tag tag-upcoming">À venir</span></div>
+        <div class="release-item"><div class="release-date">Sep 2026</div><div class="release-info"><h4>Rapport annuel sur le développement humain</h4><p>IDH, pauvreté, inégalités et bien-être</p></div><span class="tag tag-upcoming">À venir</span></div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 StatGabon — Direction Générale de la Statistique. Tous droits réservés.</span>
+      <div class="footer-links">
+        <a href="#">Accessibilité</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">Mentions légales</a>
+        <a href="mailto:contact@statgabon.com">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script>
+    const heroTitles = {
+      home:          { title: 'Données statistiques officielles du Gabon', sub: 'Accédez aux indicateurs économiques, démographiques et sociaux produits par la Direction Générale de la Statistique.' },
+      economie:      { title: 'Économie', sub: 'Comptes nationaux, finances publiques et commerce extérieur du Gabon.' },
+      population:    { title: 'Population', sub: 'Démographie, recensements et répartition géographique de la population gabonaise.' },
+      emploi:        { title: 'Emploi & Marché du travail', sub: 'Chômage, salaires et conditions de travail au Gabon.' },
+      sante:         { title: 'Santé', sub: 'Statistiques de santé publique, mortalité et services de soins au Gabon.' },
+      environnement: { title: 'Environnement & Ressources naturelles', sub: 'Forêts, ressources minières, eau et biodiversité du Gabon.' },
+      donnees:       { title: 'Données ouvertes', sub: 'Téléchargez les jeux de données officiels du Gabon.' },
+      publications:  { title: 'Publications & Rapports', sub: 'Rapports officiels et bulletins statistiques de la DGST.' },
+    };
+
+    function navigate(pageKey) {
+      document.querySelectorAll('.subpage').forEach(p => p.classList.remove('active'));
+      const target = document.getElementById('page-' + pageKey);
+      if (target) target.classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(el => {
+        el.classList.toggle('active', el.dataset.page === pageKey);
+      });
+      const info = heroTitles[pageKey] || heroTitles.home;
+      document.getElementById('hero-title').textContent = info.title;
+      document.getElementById('hero-sub').textContent = info.sub;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('.nav-item').forEach(el => {
+      el.addEventListener('click', e => { e.preventDefault(); navigate(el.dataset.page); });
+    });
+
+    // GDP Chart
+    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const textCol = dark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.45)';
+    const gridCol = dark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)';
+
+    new Chart(document.getElementById('gdpChart'), {
+      type: 'bar',
+      data: {
+        labels: ['2019','2020','2021','2022','2023','2024'],
+        datasets: [{ label: 'Croissance PIB (%)', data: [3.9,-1.8,1.5,3.0,2.4,3.1], backgroundColor: ['#1a4a2e','#a32d2d','#1a4a2e','#1a4a2e','#1a4a2e','#0f6e56'], borderRadius: 5, borderSkipped: false }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' '+(ctx.raw>0?'+':'')+ctx.raw+'%' } } },
+        scales: {
+          x: { ticks: { color: textCol, font: { size: 12 } }, grid: { display: false }, border: { display: false } },
+          y: { ticks: { color: textCol, font: { size: 12 }, callback: v => v+'%' }, grid: { color: gridCol }, border: { display: false } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
