@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="fr" id="html-root">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>StatGabon — Statistiques officielles du Gabon</title>
+  <meta name="description" content="Portail officiel des statistiques du Gabon : économie, population, environnement, politique, marchés, santé, culture et plus."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 32'><rect width='48' height='32' fill='%23009A44'/><rect y='10.67' width='48' height='10.66' fill='%23FCD116'/><rect y='21.33' width='48' height='10.67' fill='%23003189'/></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+  <style>
+  /* ═══════════════════════════════════════════
+     RESET & ROOT
+  ═══════════════════════════════════════════ */
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+  :root {
+    --green-dark:#0f2d1c; --green-mid:#1a4a2e; --green-light:#0f6e56; --green-pale:#e1f5ee;
+    --gold:#FCD116; --gold-dark:#c8a000; --gold-muted:#854f0b; --gold-pale:#faeeda;
+    --blue-flag:#003189; --blue-mid:#185fa5; --blue-pale:#e6f1fb;
+    --red:#a32d2d; --red-pale:#fcebeb;
+    --text:#1a1a1a; --text-2:#444; --text-3:#777;
+    --bg:#f7f6f2; --bg-card:#fff; --border:rgba(0,0,0,0.1);
+    --radius:10px; --shadow:0 2px 12px rgba(0,0,0,0.07);
+    --page-accent:var(--green-mid);
+  }
+
+  html { scroll-behavior:smooth; font-size:16px; }
+  body { font-family:'Source Sans 3',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+  a { color:inherit; text-decoration:none; }
+  img { max-width:100%; }
+
+  /* ═══════════════════════════════════════════
+     TOPBAR
+  ═══════════════════════════════════════════ */
+  .topbar {
+    background:var(--green-dark);
+    color:rgba(255,255,255,.6);
+    font-size:11.5px;
+    padding:6px 32px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .topbar-left { display:flex; align-items:center; gap:14px; }
+  .topbar-right { display:flex; align-items:center; gap:16px; }
+  .topbar a { color:rgba(255,255,255,.6); transition:color .15s; }
+  .topbar a:hover { color:var(--gold); }
+  .lang-btn {
+    background:transparent;
+    border:1px solid rgba(255,255,255,.3);
+    color:rgba(255,255,255,.8);
+    border-radius:3px;
+    padding:2px 9px;
+    font-size:11px;
+    font-weight:600;
+    cursor:pointer;
+    letter-spacing:.05em;
+    transition:all .15s;
+  }
+  .lang-btn.active { background:var(--gold); color:var(--green-dark); border-color:var(--gold); }
+  .lang-btn:hover:not(.active) { border-color:rgba(255,255,255,.6); color:#fff; }
+  .social-icons { display:flex; gap:10px; }
+  .social-icons a { font-size:14px; color:rgba(255,255,255,.5); transition:color .15s; }
+  .social-icons a:hover { color:var(--gold); }
+
+  /* ═══════════════════════════════════════════
+     HEADER BRAND
+  ═══════════════════════════════════════════ */
+  .site-header { background:var(--green-mid); padding:16px 32px 0; }
+  .brand-row { display:flex; align-items:center; justify-content:space-between; padding-bottom:14px; flex-wrap:wrap; gap:12px; }
+  .brand-left { display:flex; align-items:center; gap:16px; }
+
+  /* CORRECT HORIZONTAL FLAG */
+  .gabon-flag {
+    width:54px; height:36px;
+    display:flex; flex-direction:column; /* horizontal stripes */
+    border-radius:4px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,.35);
+    flex-shrink:0;
+  }
+  .gabon-flag span { flex:1; display:block; }
+
+  .brand-title { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; color:#fff; letter-spacing:-.01em; }
+  .brand-sub { font-size:11px; color:rgba(255,255,255,.5); text-transform:uppercase; letter-spacing:.07em; font-weight:300; }
+
+  .header-search { display:flex; gap:0; border-radius:5px; overflow:hidden; max-width:300px; }
+  .header-search input { flex:1; border:none; padding:8px 12px; font-size:13px; font-family:inherit; background:rgba(255,255,255,.92); color:#1a1a1a; outline:none; min-width:160px; }
+  .header-search button { background:var(--gold); border:none; color:var(--green-dark); padding:8px 14px; font-size:13px; cursor:pointer; font-weight:600; font-family:inherit; }
+
+  /* ═══════════════════════════════════════════
+     MAIN NAV
+  ═══════════════════════════════════════════ */
+  .main-nav { display:flex; border-top:1px solid rgba(255,255,255,.1); overflow-x:auto; gap:0; }
+  .main-nav::-webkit-scrollbar { display:none; }
+  .nav-item {
+    padding:11px 16px;
+    font-size:12.5px;
+    font-weight:600;
+    color:rgba(255,255,255,.7);
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    white-space:nowrap;
+    transition:color .15s, border-color .15s;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+  }
+  .nav-item:hover { color:#fff; }
+  .nav-item.active { color:var(--gold); border-bottom-color:var(--gold); }
+
+  /* ═══════════════════════════════════════════
+     TICKER / BREAKING NEWS
+  ═══════════════════════════════════════════ */
+  .ticker {
+    background:var(--gold);
+    color:var(--green-dark);
+    font-size:12px;
+    font-weight:600;
+    padding:5px 0;
+    overflow:hidden;
+    white-space:nowrap;
+  }
+  .ticker-inner { display:inline-block; animation:ticker 30s linear infinite; padding-left:100%; }
+  @keyframes ticker {
+    0%  { transform:translateX(0); }
+    100%{ transform:translateX(-100%); }
+  }
+  .ticker-label {
+    display:inline-block;
+    background:var(--green-dark);
+    color:var(--gold);
+    padding:0 14px;
+    margin-right:24px;
+    letter-spacing:.06em;
+    font-size:11px;
+  }
+
+  /* ═══════════════════════════════════════════
+     MAIN CONTENT WRAPPER
+  ═══════════════════════════════════════════ */
+  .page-wrapper { max-width:1100px; margin:0 auto; padding:24px 24px 56px; }
+
+  .subpage { display:none; }
+  .subpage.active { display:block; }
+
+  /* ═══════════════════════════════════════════
+     HERO BANNERS
+  ═══════════════════════════════════════════ */
+  .hero-banner {
+    border-radius:var(--radius);
+    overflow:hidden;
+    margin-bottom:24px;
+    position:relative;
+    min-height:260px;
+    display:flex;
+    align-items:flex-end;
+    background-size:cover;
+    background-position:center;
+  }
+  .hero-overlay { position:absolute; inset:0; }
+  .hero-content { position:relative; z-index:2; padding:28px 32px; color:#fff; max-width:620px; }
+  .hero-tag {
+    display:inline-block;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    padding:3px 10px;
+    border-radius:2px;
+    margin-bottom:10px;
+    background:var(--gold);
+    color:var(--green-dark);
+  }
+  .hero-content h2 { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; line-height:1.25; margin-bottom:8px; }
+  .hero-content p  { font-size:14px; color:rgba(255,255,255,.8); line-height:1.5; }
+
+  /* SLIDESHOW DOTS */
+  .hero-dots { position:absolute; bottom:12px; right:20px; z-index:3; display:flex; gap:6px; }
+  .hero-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.4); cursor:pointer; transition:background .2s; }
+  .hero-dot.active { background:#fff; }
+
+  /* ═══════════════════════════════════════════
+     SECTION LABELS
+  ═══════════════════════════════════════════ */
+  .section-label {
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--text-3);
+    margin-bottom:14px;
+    padding-bottom:8px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .section-label::before { content:''; flex:1; height:1px; }
+  .section-label::after  { content:''; flex:1; height:1px; background:var(--border); }
+
+  /* WSJ-STYLE ARTICLE GRID */
+  .article-grid { display:grid; gap:0; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:24px; background:var(--bg-card); }
+  .article-grid.cols-3 { grid-template-columns:repeat(3,1fr); }
+  .article-grid.cols-2 { grid-template-columns:repeat(2,1fr); }
+
+  .article-card {
+    border-right:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    padding:16px 18px;
+    cursor:pointer;
+    transition:background .12s;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .article-card:last-child { border-right:none; }
+  .article-card:nth-last-child(-n+3) { border-bottom:none; }
+  .article-card:nth-last-child(-n+2):is(.cols-2 *) { border-bottom:none; }
+  .article-card:hover { background:#fafaf8; }
+
+  .article-img {
+    width:100%; aspect-ratio:16/9; object-fit:cover;
+    border-radius:4px; margin-bottom:8px;
+    background:#e8e8e4;
+    display:flex; align-items:center; justify-content:center;
+    font-size:28px; color:#aaa;
+    overflow:hidden;
+  }
+  .article-img img { width:100%; height:100%; object-fit:cover; }
+
+  .article-category {
+    font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--page-accent);
+  }
+  .article-title {
+    font-family:'Playfair Display',serif;
+    font-size:15px; font-weight:600; line-height:1.3;
+    color:var(--text);
+  }
+  .article-desc { font-size:12px; color:var(--text-3); line-height:1.5; flex:1; }
+  .article-meta { font-size:11px; color:var(--text-3); display:flex; gap:12px; margin-top:4px; }
+
+  /* ═══════════════════════════════════════════
+     KPI STATS
+  ═══════════════════════════════════════════ */
+  .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:24px; }
+  .kpi-card {
+    background:var(--bg-card); border:1px solid var(--border);
+    border-radius:var(--radius); padding:15px 17px;
+    position:relative; overflow:hidden;
+    transition:transform .15s;
+  }
+  .kpi-card:hover { transform:translateY(-2px); }
+  .kpi-card::before { content:''; position:absolute; top:0;left:0;right:0; height:3px; background:var(--page-accent); }
+  .kpi-label { font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--text-3); margin-bottom:8px; }
+  .kpi-value { font-size:24px; font-weight:700; font-family:'Playfair Display',serif; line-height:1; margin-bottom:4px; color:var(--page-accent); }
+  .kpi-meta  { font-size:11.5px; color:var(--text-3); }
+  .up   { color:#0f6e56; font-weight:600; }
+  .down { color:#a32d2d; font-weight:600; }
+
+  /* ═══════════════════════════════════════════
+     SUBCATEGORY CARDS
+  ═══════════════════════════════════════════ */
+  .subcat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:28px; }
+  .subcat-card {
+    background:var(--bg-card); border:1px solid var(--border);
+    border-radius:var(--radius); padding:18px;
+    cursor:pointer; display:flex; flex-direction:column; gap:6px;
+    transition:border-color .15s, transform .15s;
+  }
+  .subcat-card:hover { border-color:var(--page-accent); transform:translateY(-2px); }
+  .subcat-icon { font-size:24px; margin-bottom:4px; }
+  .subcat-name { font-size:14px; font-weight:700; }
+  .subcat-desc { font-size:12px; color:var(--text-3); line-height:1.5; flex:1; }
+  .subcat-arrow { font-size:12px; font-weight:600; color:var(--page-accent); margin-top:6px; }
+
+  /* ═══════════════════════════════════════════
+     STAT ROWS
+  ═══════════════════════════════════════════ */
+  .stat-row {
+    background:var(--bg-card); border:1px solid var(--border);
+    border-left:4px solid var(--page-accent);
+    border-radius:var(--radius); padding:13px 18px;
+    margin-bottom:10px;
+    display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .stat-row h4 { font-size:14px; font-weight:600; margin-bottom:2px; }
+  .stat-row p  { font-size:12px; color:var(--text-3); }
+  .stat-val    { font-size:22px; font-weight:700; font-family:'Playfair Display',serif; color:var(--page-accent); flex-shrink:0; }
+
+  /* ═══════════════════════════════════════════
+     TWO COL LAYOUT
+  ═══════════════════════════════════════════ */
+  .two-col { display:grid; grid-template-columns:2fr 1fr; gap:20px; margin-bottom:24px; }
+  .two-col-equal { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:24px; }
+  @media(max-width:680px){ .two-col,.two-col-equal{ grid-template-columns:1fr; } }
+
+  /* ═══════════════════════════════════════════
+     CHART CARD
+  ═══════════════════════════════════════════ */
+  .chart-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:18px; }
+  .chart-card h3  { font-size:14px; font-weight:700; margin-bottom:3px; }
+  .chart-card .sub{ font-size:11.5px; color:var(--text-3); margin-bottom:14px; }
+  .bar-rows { display:flex; flex-direction:column; gap:9px; }
+  .bar-row  { display:flex; align-items:center; gap:10px; }
+  .bar-name { font-size:11.5px; color:var(--text-3); width:80px; flex-shrink:0; }
+  .bar-wrap { flex:1; height:13px; background:var(--bg); border-radius:3px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:3px; }
+  .bar-pct  { font-size:11.5px; font-weight:600; width:34px; text-align:right; flex-shrink:0; }
+
+  /* ═══════════════════════════════════════════
+     TRADITIONAL MASK BACKGROUND MOTIF (SVG inline)
+  ═══════════════════════════════════════════ */
+  .mask-bg {
+    position:relative;
+  }
+  .mask-bg::before {
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='280' viewBox='0 0 200 280'%3E%3Cellipse cx='100' cy='130' rx='60' ry='80' fill='none' stroke='%23009A44' stroke-width='1.5' opacity='.18'/%3E%3Cellipse cx='100' cy='120' rx='35' ry='45' fill='none' stroke='%23009A44' stroke-width='1' opacity='.12'/%3E%3Ccircle cx='78' cy='110' r='6' fill='none' stroke='%23009A44' stroke-width='1.2' opacity='.2'/%3E%3Ccircle cx='122' cy='110' r='6' fill='none' stroke='%23009A44' stroke-width='1.2' opacity='.2'/%3E%3Cellipse cx='100' cy='140' rx='15' ry='8' fill='none' stroke='%23009A44' stroke-width='1' opacity='.15'/%3E%3Cpath d='M70 160 Q100 175 130 160' fill='none' stroke='%23009A44' stroke-width='1.2' opacity='.18'/%3E%3Cline x1='100' y1='50' x2='100' y2='30' stroke='%23009A44' stroke-width='1.5' opacity='.2'/%3E%3Cpath d='M85 50 L100 30 L115 50' fill='none' stroke='%23009A44' stroke-width='1.2' opacity='.18'/%3E%3C/svg%3E");
+    background-size:200px 280px;
+    background-repeat:repeat;
+    pointer-events:none;
+    z-index:0;
+    opacity:.4;
+  }
+  .mask-bg > * { position:relative; z-index:1; }
+
+  /* ═══════════════════════════════════════════
+     MAP OF GABON (SVG outline)
+  ═══════════════════════════════════════════ */
+  .gabon-map-container {
+    background:var(--bg-card); border:1px solid var(--border);
+    border-radius:var(--radius); padding:18px; text-align:center;
+  }
+  .gabon-map-container h4 { font-size:13px; font-weight:700; margin-bottom:10px; }
+  .gabon-map-svg { max-width:280px; margin:0 auto; display:block; }
+
+  /* ═══════════════════════════════════════════
+     SURVEY / SONDAGE
+  ═══════════════════════════════════════════ */
+  .survey-card {
+    background:var(--bg-card); border:1px solid var(--border);
+    border-radius:var(--radius); padding:22px;
+    margin-bottom:24px;
+  }
+  .survey-card h3 { font-family:'Playfair Display',serif; font-size:18px; margin-bottom:6px; }
+  .survey-card p  { font-size:13px; color:var(--text-3); margin-bottom:18px; }
+  .survey-question { font-size:15px; font-weight:600; margin-bottom:14px; }
+  .survey-option {
+    display:flex; align-items:center; gap:12px;
+    padding:10px 14px; border:1px solid var(--border);
+    border-radius:6px; margin-bottom:8px;
+    cursor:pointer; transition:border-color .15s, background .15s;
+    font-size:13px;
+  }
+  .survey-option:hover { border-color:var(--page-accent); background:var(--green-pale); }
+  .survey-option input { accent-color:var(--page-accent); width:16px; height:16px; }
+  .survey-btn {
+    margin-top:14px; background:var(--page-accent); color:#fff;
+    border:none; border-radius:6px; padding:10px 24px;
+    font-size:13px; font-weight:600; font-family:inherit;
+    cursor:pointer; transition:opacity .15s;
+  }
+  .survey-btn:hover { opacity:.85; }
+  .survey-result { display:none; }
+  .survey-bar-wrap { height:8px; background:var(--bg); border-radius:4px; overflow:hidden; margin-top:4px; margin-bottom:12px; }
+  .survey-bar-fill { height:100%; background:var(--page-accent); border-radius:4px; transition:width .6s ease; }
+
+  /* ═══════════════════════════════════════════
+     CONTACT
+  ═══════════════════════════════════════════ */
+  .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:24px; }
+  @media(max-width:600px){ .contact-grid{ grid-template-columns:1fr; } }
+  .contact-info { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:22px; }
+  .contact-info h3 { font-family:'Playfair Display',serif; font-size:18px; margin-bottom:14px; }
+  .contact-item { display:flex; gap:12px; align-items:flex-start; margin-bottom:14px; font-size:13px; }
+  .contact-item i { color:var(--page-accent); font-size:18px; margin-top:1px; }
+  .contact-form { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:22px; }
+  .contact-form h3 { font-family:'Playfair Display',serif; font-size:18px; margin-bottom:14px; }
+  .form-row { margin-bottom:12px; }
+  .form-row label { display:block; font-size:12px; font-weight:600; color:var(--text-3); margin-bottom:5px; text-transform:uppercase; letter-spacing:.05em; }
+  .form-row input, .form-row textarea, .form-row select {
+    width:100%; border:1px solid var(--border); border-radius:6px;
+    padding:9px 12px; font-size:13px; font-family:inherit;
+    background:var(--bg); color:var(--text); outline:none;
+    transition:border-color .15s;
+  }
+  .form-row input:focus, .form-row textarea:focus { border-color:var(--page-accent); }
+  .form-row textarea { resize:vertical; min-height:100px; }
+  .form-submit {
+    background:var(--page-accent); color:#fff; border:none;
+    border-radius:6px; padding:10px 28px; font-size:13px;
+    font-weight:600; font-family:inherit; cursor:pointer;
+    transition:opacity .15s;
+  }
+  .form-submit:hover { opacity:.85; }
+
+  /* ═══════════════════════════════════════════
+     RELEASES LIST
+  ═══════════════════════════════════════════ */
+  .releases { display:flex; flex-direction:column; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:24px; }
+  .release-item { display:flex; align-items:center; gap:14px; padding:13px 17px; background:var(--bg-card); border-bottom:1px solid var(--border); transition:background .12s; }
+  .release-item:last-child { border-bottom:none; }
+  .release-item:hover { background:var(--bg); }
+  .release-date { font-size:11px; color:var(--text-3); white-space:nowrap; min-width:68px; }
+  .release-info { flex:1; }
+  .release-info h4 { font-size:13.5px; font-weight:600; margin-bottom:2px; }
+  .release-info p  { font-size:12px; color:var(--text-3); }
+  .tag { font-size:10px; font-weight:700; letter-spacing:.05em; padding:3px 9px; border-radius:20px; flex-shrink:0; }
+  .tag-new      { background:#e1f5ee; color:#0f6e56; }
+  .tag-upcoming { background:#faeeda; color:#854f0b; }
+  .tag-special  { background:#e6f1fb; color:#185fa5; }
+
+  /* ═══════════════════════════════════════════
+     UPDATE BADGE
+  ═══════════════════════════════════════════ */
+  .update-badge { display:inline-flex; align-items:center; gap:7px; font-size:11.5px; background:var(--bg-card); border:1px solid var(--border); border-radius:20px; padding:4px 12px; color:var(--text-3); margin-bottom:18px; }
+  .live-dot { width:7px; height:7px; border-radius:50%; background:var(--green-light); animation:pulse 2s infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1}50%{opacity:.4} }
+
+  /* ═══════════════════════════════════════════
+     BREADCRUMB
+  ═══════════════════════════════════════════ */
+  .breadcrumb { font-size:12px; color:var(--text-3); margin-bottom:16px; display:flex; align-items:center; gap:6px; }
+  .breadcrumb span { cursor:pointer; color:var(--page-accent); }
+  .breadcrumb span:hover { text-decoration:underline; }
+  .page-title { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; margin-bottom:6px; }
+  .page-intro { font-size:14px; color:var(--text-3); margin-bottom:22px; max-width:700px; line-height:1.6; }
+
+  /* ═══════════════════════════════════════════
+     POLITICS SLIDESHOW HERO
+  ═══════════════════════════════════════════ */
+  .politics-hero {
+    border-radius:var(--radius); overflow:hidden;
+    margin-bottom:24px; position:relative;
+    background:#0a1628;
+    min-height:300px;
+  }
+  .politics-slide {
+    display:none; min-height:300px;
+    align-items:flex-end;
+    background-size:cover; background-position:center top;
+    position:relative;
+  }
+  .politics-slide.active { display:flex; }
+  .politics-slide-overlay {
+    position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(3,10,26,.85) 30%, rgba(3,10,26,.2) 100%);
+  }
+  .politics-slide-content { position:relative; z-index:2; padding:28px 32px; color:#fff; }
+  .politics-slide-content .era { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+  .politics-slide-content h2 { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; margin-bottom:6px; }
+  .politics-slide-content p  { font-size:13.5px; color:rgba(255,255,255,.75); max-width:520px; }
+  .politics-nav-dots { position:absolute; bottom:14px; right:20px; z-index:3; display:flex; gap:7px; }
+  .politics-dot { width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.35); cursor:pointer; transition:background .2s; border:none; }
+  .politics-dot.active { background:#fff; }
+  .politics-prev, .politics-next {
+    position:absolute; top:50%; z-index:3; transform:translateY(-50%);
+    background:rgba(0,0,0,.35); border:none; color:#fff;
+    width:36px; height:36px; border-radius:50%; cursor:pointer;
+    font-size:18px; display:flex; align-items:center; justify-content:center;
+    transition:background .15s;
+  }
+  .politics-prev { left:12px; }
+  .politics-next { right:12px; }
+  .politics-prev:hover, .politics-next:hover { background:rgba(0,0,0,.6); }
+
+  /* ═══════════════════════════════════════════
+     MARKET TICKERS
+  ═══════════════════════════════════════════ */
+  .market-ticker-row {
+    display:flex; gap:0; overflow-x:auto;
+    background:var(--bg-card); border:1px solid var(--border);
+    border-radius:var(--radius); margin-bottom:20px;
+  }
+  .market-ticker-row::-webkit-scrollbar { display:none; }
+  .market-item { padding:12px 20px; border-right:1px solid var(--border); min-width:120px; flex-shrink:0; }
+  .market-item:last-child { border-right:none; }
+  .market-name { font-size:10.5px; font-weight:700; color:var(--text-3); text-transform:uppercase; letter-spacing:.05em; }
+  .market-price{ font-size:16px; font-weight:700; font-family:'Playfair Display',serif; margin:2px 0; }
+  .market-change{ font-size:11px; font-weight:600; }
+  .pos { color:#0f6e56; }
+  .neg { color:#a32d2d; }
+
+  /* ═══════════════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════════════ */
+  footer { background:var(--green-dark); color:rgba(255,255,255,.55); font-size:12px; padding:32px; margin-top:48px; }
+  .footer-grid { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:28px; margin-bottom:24px; }
+  .footer-col h4 { font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.85); margin-bottom:12px; }
+  .footer-col a  { display:block; color:rgba(255,255,255,.5); margin-bottom:7px; font-size:12px; transition:color .15s; }
+  .footer-col a:hover { color:var(--gold); }
+  .footer-bottom { max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding-top:18px; border-top:1px solid rgba(255,255,255,.1); }
+  .footer-social { display:flex; gap:14px; }
+  .footer-social a { color:rgba(255,255,255,.5); font-size:18px; transition:color .15s; }
+  .footer-social a:hover { color:var(--gold); }
+
+  /* ═══════════════════════════════════════════
+     RESPONSIVE
+  ═══════════════════════════════════════════ */
+  @media(max-width:700px){
+    .topbar { padding:6px 14px; font-size:11px; }
+    .site-header { padding:14px 14px 0; }
+    .page-wrapper { padding:16px 14px 40px; }
+    .brand-title { font-size:20px; }
+    .hero-content h2 { font-size:20px; }
+    .article-grid.cols-3 { grid-template-columns:1fr; }
+    .article-grid.cols-2 { grid-template-columns:1fr; }
+    .kpi-grid { grid-template-columns:1fr 1fr; }
+    footer { padding:20px 16px; }
+    .footer-grid { grid-template-columns:1fr 1fr; }
+  }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     TOPBAR
+════════════════════════════════════════ -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span>République Gabonaise • DGST</span>
+    <span>Lundi 11 Mai 2026</span>
+  </div>
+  <div class="topbar-right">
+    <div class="social-icons">
+      <a href="#" title="Facebook"><i class="ti ti-brand-facebook"></i></a>
+      <a href="#" title="X / Twitter"><i class="ti ti-brand-x"></i></a>
+      <a href="#" title="LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+      <a href="#" title="YouTube"><i class="ti ti-brand-youtube"></i></a>
+      <a href="#" title="Instagram"><i class="ti ti-brand-instagram"></i></a>
+    </div>
+    <button class="lang-btn active" onclick="setLang('fr')" id="btn-fr">FR</button>
+    <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     HEADER
+════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="brand-row">
+    <div class="brand-left">
+      <!-- HORIZONTAL FLAG (3 stripes top→bottom: green, yellow, blue) -->
+      <div class="gabon-flag">
+        <span style="background:#009A44;"></span>
+        <span style="background:#FCD116;"></span>
+        <span style="background:#003189;"></span>
+      </div>
+      <div>
+        <div class="brand-title">StatGabon</div>
+        <div class="brand-sub" data-fr="Direction Générale de la Statistique" data-en="National Statistics Directorate">Direction Générale de la Statistique</div>
+      </div>
+    </div>
+    <div class="header-search">
+      <input type="search" placeholder="Rechercher…" id="search-input"/>
+      <button type="button"><i class="ti ti-search"></i></button>
+    </div>
+  </div>
+  <nav class="main-nav" id="main-nav">
+    <div class="nav-item active" data-page="accueil">Accueil</div>
+    <div class="nav-item" data-page="economie">Économie</div>
+    <div class="nav-item" data-page="politique">Politique</div>
+    <div class="nav-item" data-page="marches">Marchés & Finance</div>
+    <div class="nav-item" data-page="immobilier">Immobilier</div>
+    <div class="nav-item" data-page="environnement">Environnement</div>
+    <div class="nav-item" data-page="sante">Santé</div>
+    <div class="nav-item" data-page="sport">Sport</div>
+    <div class="nav-item" data-page="monde">Monde</div>
+    <div class="nav-item" data-page="technologie">Technologie</div>
+    <div class="nav-item" data-page="juridique">Publications juridiques</div>
+    <div class="nav-item" data-page="donnees">Données</div>
+    <div class="nav-item" data-page="sondages">Sondages</div>
+    <div class="nav-item" data-page="contact">Contact</div>
+  </nav>
+</header>
+
+<!-- BREAKING NEWS TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-label">DERNIÈRE HEURE</span>
+    Gabon — PIB 2024 : +3.4% de croissance · Oligui Nguema prête serment comme Président le 3 mai 2025 · Production pétrolière en baisse de 2% · Forêts : 88% du territoire protégé · Manganèse : 7.2M t exportées · FCFA/USD : 602 · Inflation : 1.2% en 2024 · Chômage des jeunes : 36% · Recensement RGPH prévu en 2026 · Exportations totales 2024 : 13.1 Mds USD
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="ticker-label">DERNIÈRE HEURE</span>
+    Gabon — PIB 2024 : +3.4% de croissance · Oligui Nguema prête serment comme Président le 3 mai 2025 · Production pétrolière en baisse de 2% · Forêts : 88% du territoire protégé
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     PAGE CONTENT
+════════════════════════════════════════ -->
+<div class="page-wrapper">
+
+  <!-- ══ ACCUEIL ══ -->
+  <div id="page-accueil" class="subpage active mask-bg">
+
+    <div class="update-badge"><div class="live-dot"></div><span data-fr="Données actualisées — Mai 2026" data-en="Data updated — May 2026">Données actualisées — Mai 2026</span></div>
+
+    <!-- Hero -->
+    <div class="hero-banner" style="background:linear-gradient(135deg,#0f2d1c 0%,#1a6644 100%);min-height:300px;">
+      <div class="hero-overlay" style="background:linear-gradient(to right,rgba(10,28,18,.85) 50%,transparent);"></div>
+      <div class="hero-content">
+        <span class="hero-tag">À LA UNE</span>
+        <h2>Rapport économique annuel du Gabon — 2024</h2>
+        <p>PIB en hausse de 3.4%, inflation maîtrisée à 1.2%, mais le chômage des jeunes reste à 36%. Découvrez l'analyse complète de la DGST.</p>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <p class="section-label">Indicateurs clés 2024</p>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">PIB nominal</div><div class="kpi-value">$20.9B</div><div class="kpi-meta"><span class="up">▲ 3.4%</span> croissance réelle</div></div>
+      <div class="kpi-card"><div class="kpi-label">PIB / habitant</div><div class="kpi-value">$8 230</div><div class="kpi-meta">USD courants, 2024</div></div>
+      <div class="kpi-card"><div class="kpi-label">Population</div><div class="kpi-value">2.54M</div><div class="kpi-meta"><span class="up">▲ 2.2%</span>/an</div></div>
+      <div class="kpi-card"><div class="kpi-label">Inflation</div><div class="kpi-value">1.2%</div><div class="kpi-meta"><span class="down">▼</span> vs 3.6% en 2023</div></div>
+      <div class="kpi-card"><div class="kpi-label">Chômage</div><div class="kpi-value">20.2%</div><div class="kpi-meta">Jeunes : 36%</div></div>
+      <div class="kpi-card"><div class="kpi-label">Espérance de vie</div><div class="kpi-value">69 ans</div><div class="kpi-meta">2024</div></div>
+      <div class="kpi-card"><div class="kpi-label">IDH</div><div class="kpi-value">0.733</div><div class="kpi-meta">108e / 193 pays</div></div>
+      <div class="kpi-card"><div class="kpi-label">Couverture forêts</div><div class="kpi-value">88%</div><div class="kpi-meta">du territoire</div></div>
+    </div>
+
+    <!-- Articles -->
+    <p class="section-label">À la une</p>
+    <div class="article-grid cols-3">
+      <div class="article-card" onclick="navigate('economie')">
+        <div class="article-img">🏛️</div>
+        <div class="article-category">Économie</div>
+        <div class="article-title">La croissance gabonaise résiste malgré la baisse des recettes pétrolières</div>
+        <div class="article-desc">Le PIB réel progresse de 3.4% en 2024 porté par le bois, les mines et les services, compensant la baisse de 12% des revenus pétroliers.</div>
+        <div class="article-meta"><span>DGST</span><span>Avr 2026</span></div>
+      </div>
+      <div class="article-card" onclick="navigate('politique')">
+        <div class="article-img">🏛️</div>
+        <div class="article-category">Politique</div>
+        <div class="article-title">Oligui Nguema investi Président avec 94.85% des voix</div>
+        <div class="article-desc">Le 3 mai 2025, l'ancien général de brigade a prêté serment à Angondjé, devant 40 000 partisans et 20 chefs d'État africains.</div>
+        <div class="article-meta"><span>StatGabon</span><span>Mai 2025</span></div>
+      </div>
+      <div class="article-card" onclick="navigate('environnement')">
+        <div class="article-img">🌳</div>
+        <div class="article-category">Environnement</div>
+        <div class="article-title">Les forêts gabonaises valent 75 milliards USD en services écosystémiques</div>
+        <div class="article-desc">Selon la Banque mondiale, la valeur des forêts du Gabon a quasi doublé entre 2000 et 2020, à 99% grâce à la rétention de carbone.</div>
+        <div class="article-meta"><span>Banque Mondiale</span><span>2025</span></div>
+      </div>
+      <div class="article-card" onclick="navigate('marches')">
+        <div class="article-img">📈</div>
+        <div class="article-category">Marchés</div>
+        <div class="article-title">Le franc CFA face au dollar : une dépréciation de 14.4% sur dix ans</div>
+        <div class="article-desc">De fin-2014 à fin-2024 le FCFA s'est affaibli de 14.4% face au dollar américain, pesant sur les importations gabonaises.</div>
+        <div class="article-meta"><span>BEAC</span><span>Mar 2026</span></div>
+      </div>
+      <div class="article-card" onclick="navigate('sante')">
+        <div class="article-img">🏥</div>
+        <div class="article-category">Santé</div>
+        <div class="article-title">Paludisme : 35% des hospitalisations au Gabon en 2024</div>
+        <div class="article-desc">Malgré les campagnes de prévention, le paludisme reste la première cause d'hospitalisation, touchant particulièrement les enfants de moins de 5 ans.</div>
+        <div class="article-meta"><span>Ministère Santé</span><span>Fév 2026</span></div>
+      </div>
+      <div class="article-card" onclick="navigate('technologie')">
+        <div class="article-img">📱</div>
+        <div class="article-category">Technologie</div>
+        <div class="article-title">Taux de pénétration mobile : 135% — le Gabon numérique accélère</div>
+        <div class="article-desc">Avec 135 abonnements mobiles pour 100 habitants, le Gabon figure parmi les pays les mieux connectés d'Afrique centrale.</div>
+        <div class="article-meta"><span>ARCEP Gabon</span><span>Jan 2026</span></div>
+      </div>
+    </div>
+
+    <!-- Two-col: chart + map -->
+    <div class="two-col">
+      <div class="chart-card">
+        <h3>Croissance du PIB réel (%)</h3>
+        <p class="sub">Évolution 2019–2024</p>
+        <div style="position:relative;height:200px;"><canvas id="gdpChart"></canvas></div>
+      </div>
+      <div class="gabon-map-container">
+        <h4>🗺️ Carte du Gabon</h4>
+        <svg class="gabon-map-svg" viewBox="0 0 300 380" xmlns="http://www.w3.org/2000/svg">
+          <!-- Simplified Gabon outline - 9 provinces -->
+          <path d="M 80 40 L 120 20 L 170 25 L 210 50 L 230 90 L 240 130 L 235 170 L 220 200 L 230 240 L 210 280 L 180 320 L 150 350 L 120 340 L 90 310 L 70 270 L 60 230 L 50 190 L 45 150 L 55 110 L 65 75 Z" fill="#e1f5ee" stroke="#1a4a2e" stroke-width="2"/>
+          <!-- Province boundaries (simplified) -->
+          <line x1="80" y1="150" x2="230" y2="150" stroke="#1a4a2e" stroke-width="0.8" stroke-dasharray="4"/>
+          <line x1="80" y1="220" x2="225" y2="220" stroke="#1a4a2e" stroke-width="0.8" stroke-dasharray="4"/>
+          <line x1="140" y1="40" x2="140" y2="340" stroke="#1a4a2e" stroke-width="0.8" stroke-dasharray="4"/>
+          <!-- Libreville dot -->
+          <circle cx="88" cy="100" r="6" fill="#1a4a2e"/>
+          <text x="98" y="104" font-size="10" fill="#1a4a2e" font-family="sans-serif" font-weight="bold">Libreville</text>
+          <!-- Equateur line -->
+          <line x1="45" y1="195" x2="240" y2="195" stroke="#FCD116" stroke-width="1.2" stroke-dasharray="6,3" opacity="0.7"/>
+          <text x="50" y="208" font-size="8" fill="#854f0b" font-family="sans-serif">Équateur</text>
+          <!-- Province labels -->
+          <text x="88" y="130" font-size="8" fill="#555" font-family="sans-serif">Estuaire</text>
+          <text x="155" y="80" font-size="8" fill="#555" font-family="sans-serif">Woleu-N.</text>
+          <text x="155" y="130" font-size="8" fill="#555" font-family="sans-serif">Ogooué-I.</text>
+          <text x="70" y="185" font-size="8" fill="#555" font-family="sans-serif">Moyen-O.</text>
+          <text x="160" y="185" font-size="8" fill="#555" font-family="sans-serif">Ogooué-L.</text>
+          <text x="80" y="250" font-size="8" fill="#555" font-family="sans-serif">Ngounié</text>
+          <text x="160" y="250" font-size="8" fill="#555" font-family="sans-serif">Haut-O.</text>
+          <text x="90" y="305" font-size="8" fill="#555" font-family="sans-serif">Nyanga</text>
+          <text x="160" y="305" font-size="8" fill="#555" font-family="sans-serif">Ogooué-I.</text>
+          <!-- Atlantic Ocean label -->
+          <text x="22" y="200" font-size="7" fill="#185fa5" font-family="sans-serif" transform="rotate(-90,22,200)">Océan Atlantique</text>
+        </svg>
+        <p style="font-size:11px;color:var(--text-3);margin-top:8px;">9 provinces · Capitale : Libreville</p>
+      </div>
+    </div>
+
+    <!-- Sector chart -->
+    <div class="chart-card" style="margin-bottom:24px;">
+      <h3>Structure du PIB par secteur</h3>
+      <p class="sub">Répartition estimée 2024</p>
+      <div class="bar-rows">
+        <div class="bar-row"><span class="bar-name">Pétrole</span><div class="bar-wrap"><div class="bar-fill" style="width:46%;background:#1a4a2e;"></div></div><span class="bar-pct">46%</span></div>
+        <div class="bar-row"><span class="bar-name">Services</span><div class="bar-wrap"><div class="bar-fill" style="width:37%;background:#185fa5;"></div></div><span class="bar-pct">37%</span></div>
+        <div class="bar-row"><span class="bar-name">Mines</span><div class="bar-wrap"><div class="bar-fill" style="width:8%;background:#c8a000;"></div></div><span class="bar-pct">8%</span></div>
+        <div class="bar-row"><span class="bar-name">Forêt/Bois</span><div class="bar-wrap"><div class="bar-fill" style="width:5%;background:#0f6e56;"></div></div><span class="bar-pct">5%</span></div>
+        <div class="bar-row"><span class="bar-name">Agriculture</span><div class="bar-wrap"><div class="bar-fill" style="width:4%;background:#854f0b;"></div></div><span class="bar-pct">4%</span></div>
+      </div>
+    </div>
+
+    <!-- Publications -->
+    <p class="section-label">Dernières publications</p>
+    <div class="releases">
+      <div class="release-item"><div class="release-date">Avr 2026</div><div class="release-info"><h4>Comptes nationaux — T4 2024</h4><p>PIB, consommation, investissement, épargne</p></div><span class="tag tag-new">Nouveau</span></div>
+      <div class="release-item"><div class="release-date">Mar 2026</div><div class="release-info"><h4>Enquête emploi et chômage 2024</h4><p>Activité, chômage par âge et genre</p></div><span class="tag tag-new">Nouveau</span></div>
+      <div class="release-item"><div class="release-date">Fév 2026</div><div class="release-info"><h4>Rapport prix à la consommation 2024</h4><p>IPC, inflation annuelle</p></div><span class="tag tag-new">Nouveau</span></div>
+      <div class="release-item"><div class="release-date">Juin 2026</div><div class="release-info"><h4>Recensement RGPH 2026 — résultats prov.</h4><p>Résultats provisoires attendus</p></div><span class="tag tag-upcoming">À venir</span></div>
+    </div>
+  </div><!-- /accueil -->
+
+  <!-- ══ ÉCONOMIE ══ -->
+  <div id="page-economie" class="subpage">
+    <div class="breadcrumb"><span onclick="navigate('accueil')">Accueil</span> › Économie</div>
+    <!-- Hero: Ministry of Economy building (represented with gradient) -->
+    <div class="hero-banner" style="background:linear-gradient(135deg,#1a2a4a 0%,#2d5a8a 100%);min-height:260px;">
+      <div class="hero-overlay" style="background:linear-gradient(to top,rgba(10,20,50,.8) 40%,transparent);"></div>
+      <div class="hero-content">
+        <span class="hero-tag">ÉCONOMIE</span>
+        <h2>Ministère de l'Économie — Libreville</h2>
+        <p>Données macroéconomiques officielles, comptes nationaux et projections 2025-2027 du Gabon.</p>
+      </div>
+    </div>
+    <p class="section-label">Sous-rubriques</p>
+    <div class="subcat-grid">
+      <div class="subcat-card"><div class="subcat-icon">📊</div><div class="subcat-name">Comptes nationaux</div><div class="subcat-desc">PIB trimestriel, annuel, croissance par secteur.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">💰</div><div class="subcat-name">Prix & Inflation</div><div class="subcat-desc">IPC mensuel, inflation par catégorie, prix producteurs.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏦</div><div class="subcat-name">Finances publiques</div><div class="subcat-desc">Budget d'État, recettes pétrolières, dette publique.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🚢</div><div class="subcat-name">Commerce extérieur</div><div class="subcat-desc">Exports $13.1B, imports $4B, balance 2024.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🛢️</div><div class="subcat-name">Secteur pétrolier</div><div class="subcat-desc">Production, réserves, revenus hydrocarbures.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🪵</div><div class="subcat-name">Forêt & Bois</div><div class="subcat-desc">Exploitation, exportations, concessions.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">⛏️</div><div class="subcat-name">Mines & Manganèse</div><div class="subcat-desc">Production 7.2M t de manganèse, or, fer.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🌾</div><div class="subcat-name">Agriculture</div><div class="subcat-desc">Cacao, café, huile de palme, caoutchouc.</div><div class="subcat-arrow">Consulter →</div></div>
+    </div>
+    <p class="section-label">Indicateurs clés</p>
+    <div class="stat-row"><div><h4>PIB nominal</h4><p>USD courants, 2024</p></div><div class="stat-val">$20.9B</div></div>
+    <div class="stat-row"><div><h4>Croissance PIB réel</h4><p>2024 — Banque Mondiale</p></div><div class="stat-val">+3.4%</div></div>
+    <div class="stat-row"><div><h4>Inflation (IPC)</h4><p>Variation annuelle 2024</p></div><div class="stat-val">1.2%</div></div>
+    <div class="stat-row"><div><h4>Exportations totales</h4><p>2024</p></div><div class="stat-val">$13.1B</div></div>
+    <div class="stat-row"><div><h4>Investissements directs</h4><p>% du PIB, 2024</p></div><div class="stat-val">5.5%</div></div>
+    <div class="stat-row"><div><h4>Dette publique</h4><p>Estimée, 2024</p></div><div class="stat-val">~65% PIB</div></div>
+    <p class="section-label">Publications récentes</p>
+    <div class="article-grid cols-2">
+      <div class="article-card"><div class="article-img">📉</div><div class="article-category">Comptes nationaux</div><div class="article-title">Croissance de 3.4% en 2024 malgré la baisse pétrolière</div><div class="article-desc">Le bois, les mines et les services ont compensé la baisse de 12% des recettes d'hydrocarbures.</div><div class="article-meta"><span>DGST</span><span>Avr 2026</span></div></div>
+      <div class="article-card"><div class="article-img">🏭</div><div class="article-category">Industrie</div><div class="article-title">Le Gabon 5e producteur de pétrole d'Afrique subsaharienne</div><div class="article-desc">Le secteur pétrolier représente 46% du PIB et 80% des exportations, mais la production décline depuis 2014.</div><div class="article-meta"><span>BEAC</span><span>Mar 2026</span></div></div>
+    </div>
+  </div><!-- /economie -->
+
+  <!-- ══ POLITIQUE ══ -->
+  <div id="page-politique" class="subpage">
+    <div class="breadcrumb"><span onclick="navigate('accueil')">Accueil</span> › Politique</div>
+
+    <!-- PRESIDENTIAL SLIDESHOW -->
+    <div class="politics-hero" id="politics-hero">
+      <button class="politics-prev" onclick="prevSlide()">‹</button>
+      <button class="politics-next" onclick="nextSlide()">›</button>
+
+      <div class="politics-slide active" style="background:linear-gradient(135deg,#001a40 0%,#003a80 100%);">
+        <div class="politics-slide-overlay"></div>
+        <div class="politics-slide-content">
+          <div class="era">1960 – 1967 · Premier Président</div>
+          <h2>Léon Mba — Père de la Nation</h2>
+          <p>Premier président du Gabon indépendant (1960–1967). Ancien chef d'entreprise, il a présidé à l'indépendance du pays le 17 août 1960 et posé les bases de l'État gabonais moderne. Le Palais Présidentiel de Libreville porte son héritage.</p>
+        </div>
+      </div>
+
+      <div class="politics-slide" style="background:linear-gradient(135deg,#0a2040 0%,#1a4a2e 100%);">
+        <div class="politics-slide-overlay"></div>
+        <div class="politics-slide-content">
+          <div class="era">1967 – 2009 · 42 ans au pouvoir</div>
+          <h2>Omar Bongo Ondimba</h2>
+          <p>Chef d'État le plus longtemps en fonction d'Afrique (42 ans). Sous sa présidence, le Gabon a connu un essor pétrolier majeur. Il a transformé Libreville en capitale moderne et développé la diplomatie gabonaise sur la scène internationale.</p>
+        </div>
+      </div>
+
+      <div class="politics-slide" style="background:linear-gradient(135deg,#1a1a40 0%,#2d2d60 100%);">
+        <div class="politics-slide-overlay"></div>
+        <div class="politics-slide-content">
+          <div class="era">2009 – 2023 · Héritage contesté</div>
+          <h2>Ali Bongo Ondimba</h2>
+          <p>Fils d'Omar Bongo, président de 2009 à 2023. Son troisième mandat controversé a conduit au coup d'État militaire du 30 août 2023. Il demeure en résidence surveillée à Libreville depuis lors.</p>
+        </div>
+      </div>
+
+      <div class="politics-slide" style="background:linear-gradient(135deg,#1a2a10 0%,#2a5a1a 100%);">
+        <div class="politics-slide-overlay"></div>
+        <div class="politics-slide-content">
+          <div class="era">2023 – 2025 · Transition</div>
+          <h2>Transition — CTRI (Comité pour la Transition)</h2>
+          <p>Le Comité pour la Transition et la Restauration des Institutions (CTRI), conduit par le Général Oligui Nguema, a géré la période de transition de 19 mois (août 2023 – mai 2025) avant les élections présidentielles d'avril 2025.</p>
+        </div>
+      </div>
+
+      <div class="politics-slide" style="background:linear-gradient(135deg,#0f2d1c 0%,#1a6644 100%);">
+        <div class="politics-slide-overlay"></div>
+        <div class="politics-slide-content">
+          <div class="era">2025 – Présent · Élu avec 94.85% des voix</div>
+          <h2>Brice Clotaire Oligui Nguema — Président de la République</h2>
+          <p>Investi le 3 mai 2025 au Stade d'Angondjé à Libreville, devant 40 000 personnes et 20 chefs d'État africains. Il a remporté l'élection présidentielle du 12 avril 2025 avec 94.85% des suffrages, mettant fin à la période transitoire.</p>
+        </div>
+      </div>
+
+      <div class="politics-nav-dots" id="politics-dots">
+        <button class="politics-dot active" onclick="goSlide(0)"></button>
+        <button class="politics-dot" onclick="goSlide(1)"></button>
+        <button class="politics-dot" onclick="goSlide(2)"></button>
+        <button class="politics-dot" onclick="goSlide(3)"></button>
+        <button class="politics-dot" onclick="goSlide(4)"></button>
+      </div>
+    </div>
+
+    <p class="section-label">Sous-rubriques</p>
+    <div class="subcat-grid">
+      <div class="subcat-card" style="--page-accent:#003189;"><div class="subcat-icon">🏛️</div><div class="subcat-name">Présidence</div><div class="subcat-desc">Palais Présidentiel, décrets, communiqués officiels.</div><div class="subcat-arrow" style="color:#003189;">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🗳️</div><div class="subcat-name">Élections</div><div class="subcat-desc">Résultats électoraux, statistiques de participation, historique.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏛️</div><div class="subcat-name">Assemblée Nationale</div><div class="subcat-desc">Composition, lois votées, sessions parlementaires.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">⚖️</div><div class="subcat-name">Gouvernement</div><div class="subcat-desc">Composition du gouvernement, attributions ministérielles.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🌍</div><div class="subcat-name">Diplomatie</div><div class="subcat-desc">Relations bilatérales, organisations régionales, CEMAC, UA.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🛡️</div><div class="subcat-name">Défense & Sécurité</div><div class="subcat-desc">Forces armées, gendarmerie, sécurité nationale.</div><div class="subcat-arrow">Consulter →</div></div>
+    </div>
+
+    <p class="section-label">Actualité politique</p>
+    <div class="article-grid cols-2">
+      <div class="article-card"><div class="article-img">🗳️</div><div class="article-category">Élections 2025</div><div class="article-title">Oligui Nguema élu avec 94.85% — taux de participation 87.21%</div><div class="article-desc">Le 12 avril 2025, sur 920 000 inscrits, les Gabonais ont massivement soutenu l'ancien chef de la Garde républicaine.</div><div class="article-meta"><span>Min. Intérieur</span><span>Avr 2025</span></div></div>
+      <div class="article-card"><div class="article-img">🏛️</div><div class="article-category">Institutions</div><div class="article-title">La nouvelle Constitution gabonaise adoptée par référendum</div><div class="article-desc">La transition a abouti à une nouvelle loi fondamentale renforçant les contre-pouvoirs et la gouvernance démocratique.</div><div class="article-meta"><span>StatGabon</span><span>2024</span></div></div>
+    </div>
+  </div><!-- /politique -->
+
+  <!-- ══ MARCHÉS & FINANCE ══ -->
+  <div id="page-marches" class="subpage">
+    <div class="breadcrumb"><span onclick="navigate('accueil')">Accueil</span> › Marchés & Finance</div>
+    <h2 class="page-title">Marchés & Finance</h2>
+    <p class="page-intro">Données financières, cours des matières premières gabonaises, indicateurs bancaires et marchés de capitaux régionaux.</p>
+
+    <!-- Market tickers -->
+    <div class="market-ticker-row">
+      <div class="market-item"><div class="market-name">Pétrole Brent</div><div class="market-price">$74.20</div><div class="market-change neg">▼ 0.8%</div></div>
+      <div class="market-item"><div class="market-name">Manganèse (t)</div><div class="market-price">$4.15</div><div class="market-change pos">▲ 1.2%</div></div>
+      <div class="market-item"><div class="market-name">FCFA/USD</div><div class="market-price">602.4</div><div class="market-change neg">▼ 0.3%</div></div>
+      <div class="market-item"><div class="market-name">FCFA/EUR</div><div class="market-price">655.96</div><div class="market-change pos">▲ 0.0%</div></div>
+      <div class="market-item"><div class="market-name">Bois Okoumé (m³)</div><div class="market-price">$320</div><div class="market-change pos">▲ 2.1%</div></div>
+      <div class="market-item"><div class="market-name">Or (once)</div><div class="market-price">$2 384</div><div class="market-change pos">▲ 0.5%</div></div>
+      <div class="market-item"><div class="market-name">Cacao (t)</div><div class="market-price">$8 420</div><div class="market-change neg">▼ 1.5%</div></div>
+    </div>
+
+    <p class="section-label">Sous-rubriques</p>
+    <div class="subcat-grid">
+      <div class="subcat-card"><div class="subcat-icon">🛢️</div><div class="subcat-name">Pétrole & Gaz</div><div class="subcat-desc">Prix Brent, production COMILOG, recettes SOGARA.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">⛏️</div><div class="subcat-name">Mines & Métaux</div><div class="subcat-desc">Manganèse (COMILOG), fer (Bélinga), or, uranium.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🪵</div><div class="subcat-name">Bois & Sylviculture</div><div class="subcat-desc">Prix de l'Okoumé, exportations transformées vs brutes.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏦</div><div class="subcat-name">Secteur bancaire</div><div class="subcat-desc">BGFI, UGB, taux d'intérêt BEAC, crédit à l'économie.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">💱</div><div class="subcat-name">Change & BEAC</div><div class="subcat-desc">FCFA, réserves de change, politique monétaire CEMAC.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">📋</div><div class="subcat-name">Budget de l'État</div><div class="subcat-desc">Recettes fiscales, dépenses, dette intérieure et extérieure.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🌾</div><div class="subcat-name">Agriculture & Agro</div><div class="subcat-desc">Cacao, café, huile de palme, caoutchouc — prix export.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🐟</div><div class="subcat-name">Pêche & Mer</div><div class="subcat-desc">Production halieutique, exportations de poissons.</div><div class="subcat-arrow">Consulter →</div></div>
+    </div>
+    <p class="section-label">Indicateurs financiers</p>
+    <div class="stat-row"><div><h4>Exportations totales</h4><p>2024</p></div><div class="stat-val">$13.1B</div></div>
+    <div class="stat-row"><div><h4>Importations totales</h4><p>2024</p></div><div class="stat-val">$4.0B</div></div>
+    <div class="stat-row"><div><h4>Solde commercial</h4><p>2024</p></div><div class="stat-val">+$9.1B</div></div>
+    <div class="stat-row"><div><h4>Déficit budgétaire</h4><p>% du PIB, 2024 estimé</p></div><div class="stat-val">-3.7%</div></div>
+    <div class="stat-row"><div><h4>Réserves de change</h4><p>Mois d'importations couverts</p></div><div class="stat-val">~5 mois</div></div>
+  </div><!-- /marches -->
+
+  <!-- ══ IMMOBILIER ══ -->
+  <div id="page-immobilier" class="subpage">
+    <div class="breadcrumb"><span onclick="navigate('accueil')">Accueil</span> › Immobilier</div>
+    <div class="hero-banner" style="background:linear-gradient(135deg,#1a2a1a 0%,#3a5a3a 100%);min-height:220px;">
+      <div class="hero-overlay" style="background:linear-gradient(to top,rgba(10,20,10,.8) 40%,transparent);"></div>
+      <div class="hero-content"><span class="hero-tag">IMMOBILIER</span><h2>Marché immobilier au Gabon</h2><p>Prix au m², loyers, permis de construire et politiques de logement.</p></div>
+    </div>
+    <p class="section-label">Sous-rubriques</p>
+    <div class="subcat-grid">
+      <div class="subcat-card"><div class="subcat-icon">🏙️</div><div class="subcat-name">Libreville & Grand Libreville</div><div class="subcat-desc">Prix au m² résidentiel, commercial, loyers moyens par quartier.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏘️</div><div class="subcat-name">Logement social</div><div class="subcat-desc">Programme SNBG, logements subventionnés, demande vs offre.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏗️</div><div class="subcat-name">Construction</div><div class="subcat-desc">Permis de construire délivrés, secteur BTP, coûts matériaux.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏢</div><div class="subcat-name">Immobilier commercial</div><div class="subcat-desc">Bureaux, commerces, zones économiques spéciales.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🌆</div><div class="subcat-name">Provinces</div><div class="subcat-desc">Port-Gentil, Franceville, Oyem — marchés locaux.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">📜</div><div class="subcat-name">Foncier & Titres</div><div class="subcat-desc">Régime foncier, titres de propriété, cadastre national.</div><div class="subcat-arrow">Consulter →</div></div>
+    </div>
+    <p class="section-label">Indicateurs clés</p>
+    <div class="stat-row"><div><h4>Loyer moyen — Libreville</h4><p>Appartement 3 pièces centre-ville</p></div><div class="stat-val">~350 000 XAF</div></div>
+    <div class="stat-row"><div><h4>Prix m² résidentiel</h4><p>Libreville, quartiers prisés</p></div><div class="stat-val">~450 000 XAF</div></div>
+    <div class="stat-row"><div><h4>Taux d'accès propriété</h4><p>Population urbaine propriétaire</p></div><div class="stat-val">~28%</div></div>
+  </div><!-- /immobilier -->
+
+  <!-- ══ ENVIRONNEMENT ══ -->
+  <div id="page-environnement" class="subpage mask-bg">
+    <div class="breadcrumb"><span onclick="navigate('accueil')">Accueil</span> › Environnement</div>
+    <div class="hero-banner" style="background:linear-gradient(135deg,#0a2a10 0%,#1a6a2a 60%,#2a8a3a 100%);min-height:280px;">
+      <div class="hero-overlay" style="background:linear-gradient(to top,rgba(5,25,8,.8) 40%,rgba(5,25,8,.1));"></div>
+      <div class="hero-content">
+        <span class="hero-tag" style="background:#009A44;color:#fff;">ENVIRONNEMENT</span>
+        <h2>Le Gabon, Gardien de la Forêt Équatoriale</h2>
+        <p>88% du territoire couvert de forêts. Carbon sink mondial. Parmi les taux de déforestation les plus bas d'Afrique centrale.</p>
+      </div>
+    </div>
+    <p class="section-label">Sous-rubriques</p>
+    <div class="subcat-grid">
+      <div class="subcat-card"><div class="subcat-icon">🌳</div><div class="subcat-name">Forêts & Biodiversité</div><div class="subcat-desc">Couverture forestière, déforestation, parcs nationaux, ANPN.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🐘</div><div class="subcat-name">Faune sauvage</div><div class="subcat-desc">Éléphants (95 000), gorilles, chimpanzés, pangolins.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🌊</div><div class="subcat-name">Ressources en eau</div><div class="subcat-desc">Ogooué, Nyanga, bassins versants, eau potable.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🌡️</div><div class="subcat-name">Climat & Émissions</div><div class="subcat-desc">CO₂ 2.7t/hab, REDD+, accords Paris, météorologie.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">⚡</div><div class="subcat-name">Énergie verte</div><div class="subcat-desc">Hydroélectricité (Kinguélé), solaire, transition énergétique.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🐟</div><div class="subcat-name">Ressources marines</div><div class="subcat-desc">ZEE 200 miles, biodiversité marine, pêche durable.</div><div class="subcat-arrow">Consulter →</div></div>
+    </div>
+    <p class="section-label">Indicateurs environnementaux</p>
+    <div class="stat-row"><div><h4>Couverture forestière</h4><p>Du territoire national</p></div><div class="stat-val">88%</div></div>
+    <div class="stat-row"><div><h4>Valeur écosystèmes forestiers</h4><p>Services carboniques, 2020</p></div><div class="stat-val">$75.1B</div></div>
+    <div class="stat-row"><div><h4>Parcs nationaux</h4><p>13 parcs, 11.3% du territoire</p></div><div class="stat-val">13 parcs</div></div>
+    <div class="stat-row"><div><h4>Émissions CO₂</h4><p>Tonnes / habitant, 2022</p></div><div class="stat-val">2.7 t</div></div>
+    <div class="stat-row"><div><h4>Éléphants de forêt</h4><p>Estimation 2022</p></div><div class="stat-val">95 000</div></div>
+  </div><!-- /environnement -->
+
+  <!-- ══ SANTÉ ══ -->
+  <div id="page-sante" class="subpage">
+    <div class="breadcrumb"><span onclick="navigate('accueil')">Accueil</span> › Santé</div>
+    <div class="hero-banner" style="background:linear-gradient(135deg,#1a0a0a 0%,#6a1a1a 100%);min-height:220px;">
+      <div class="hero-overlay" style="background:linear-gradient(to top,rgba(30,5,5,.8) 40%,transparent);"></div>
+      <div class="hero-content"><span class="hero-tag" style="background:#c0392b;color:#fff;">SANTÉ</span><h2>Santé publique au Gabon</h2><p>Indicateurs de santé, couverture sanitaire, maladies prioritaires et réformes du système de santé.</p></div>
+    </div>
+    <p class="section-label">Sous-rubriques</p>
+    <div class="subcat-grid">
+      <div class="subcat-card"><div class="subcat-icon">❤️</div><div class="subcat-name">Mortalité & Espérance de vie</div><div class="subcat-desc">Espérance 69 ans, mortalité infantile 37‰.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🦟</div><div class="subcat-name">Maladies tropicales</div><div class="subcat-desc">Paludisme (35% hospitalisations), VIH 3.4%, tuberculose.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏥</div><div class="subcat-name">Infrastructures sanitaires</div><div class="subcat-desc">CHU Omar Bongo, hôpitaux provinciaux, centres de santé.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">💉</div><div class="subcat-name">Vaccination</div><div class="subcat-desc">Couverture DTP3 74%, programme élargi vaccination.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🤰</div><div class="subcat-name">Santé maternelle</div><div class="subcat-desc">Mortalité maternelle, accouchements assistés, prénataux.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">💊</div><div class="subcat-name">Médicaments & Pharmacie</div><div class="subcat-desc">Accès aux soins, CNAMGS, assurance maladie universelle.</div><div class="subcat-arrow">Consulter →</div></div>
+    </div>
+    <p class="section-label">Indicateurs clés</p>
+    <div class="stat-row"><div><h4>Espérance de vie</h4><p>2024</p></div><div class="stat-val">69 ans</div></div>
+    <div class="stat-row"><div><h4>Mortalité infantile</h4><p>Pour 1 000 naissances vivantes</p></div><div class="stat-val">37‰</div></div>
+    <div class="stat-row"><div><h4>Prévalence VIH/SIDA</h4><p>Adultes 15–49 ans</p></div><div class="stat-val">3.4%</div></div>
+    <div class="stat-row"><div><h4>Couverture vaccinale DTP3</h4><p>Enfants &lt;1 an</p></div><div class="stat-val">74%</div></div>
+  </div><!-- /sante -->
+
+  <!-- ══ SPORT ══ -->
+  <div id="page-sport" class="subpage">
+    <div class="breadcrumb"><span onclick="navigate('accueil')">Accueil</span> › Sport</div>
+    <div class="hero-banner" style="background:linear-gradient(135deg,#0a1a0a 0%,#FCD116 200%);min-height:220px;background:linear-gradient(135deg,#1a4a2e 0%,#c8a000 100%);">
+      <div class="hero-overlay" style="background:linear-gradient(to top,rgba(10,25,15,.8) 40%,transparent);"></div>
+      <div class="hero-content"><span class="hero-tag">SPORT</span><h2>Sport gabonais — Les Panthères en chiffres</h2><p>Football, basketball, athlétisme et sports traditionnels : statistiques et performances nationales.</p></div>
+    </div>
+    <p class="section-label">Sous-rubriques</p>
+    <div class="subcat-grid">
+      <div class="subcat-card"><div class="subcat-icon">⚽</div><div class="subcat-name">Football</div><div class="subcat-desc">Les Panthères du Gabon, championnat D1, CAN, joueurs pros (Pierre-Emerick Aubameyang).</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏀</div><div class="subcat-name">Basketball</div><div class="subcat-desc">Fédération nationale, compétitions FIBA Afrique.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏃</div><div class="subcat-name">Athlétisme</div><div class="subcat-desc">Jeux africains, JO, performances des athlètes gabonais.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🎾</div><div class="subcat-name">Tennis & Sports raquette</div><div class="subcat-desc">Infrastructures, classements, tournois nationaux.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🥊</div><div class="subcat-name">Arts martiaux & Boxe</div><div class="subcat-desc">Boxe, judo, karaté — palmarès gabonais.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏟️</div><div class="subcat-name">Infrastructures sportives</div><div class="subcat-desc">Stade de l'Amitié, Stade Angondjé (40 000 places), gymnases.</div><div class="subcat-arrow">Consulter →</div></div>
+    </div>
+  </div><!-- /sport -->
+
+  <!-- ══ MONDE ══ -->
+  <div id="page-monde" class="subpage">
+    <div class="breadcrumb"><span onclick="navigate('accueil')">Accueil</span> › Monde</div>
+    <div class="hero-banner" style="background:linear-gradient(135deg,#1a1a2e 0%,#2a2a5e 100%);min-height:220px;">
+      <div class="hero-overlay" style="background:linear-gradient(to top,rgba(10,10,30,.8) 40%,transparent);"></div>
+      <div class="hero-content"><span class="hero-tag">MONDE</span><h2>Le Gabon dans le monde</h2><p>Comparaisons internationales, organisations régionales et positionnement géopolitique du Gabon.</p></div>
+    </div>
+    <p class="section-label">Sous-rubriques</p>
+    <div class="subcat-grid">
+      <div class="subcat-card"><div class="subcat-icon">🌍</div><div class="subcat-name">Gabon & Afrique centrale</div><div class="subcat-desc">CEMAC, CEEAC, comparaisons régionales.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🤝</div><div class="subcat-name">Partenaires internationaux</div><div class="subcat-desc">France, Chine, USA, Union Européenne, coopération.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏅</div><div class="subcat-name">Classements mondiaux</div><div class="subcat-desc">IDH 108e, Doing Business, transparence, liberté de presse.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🌱</div><div class="subcat-name">Développement durable</div><div class="subcat-desc">ODD, agenda 2063, contributions nationales déterminées.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">📡</div><div class="subcat-name">Diaspora gabonaise</div><div class="subcat-desc">28 000 Gabonais à l'étranger, France, USA, Canada.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏛️</div><div class="subcat-name">Organisations internationales</div><div class="subcat-desc">ONU, UA, FMI, Banque Mondiale — statuts et contributions.</div><div class="subcat-arrow">Consulter →</div></div>
+    </div>
+  </div><!-- /monde -->
+
+  <!-- ══ TECHNOLOGIE ══ -->
+  <div id="page-technologie" class="subpage">
+    <div class="breadcrumb"><span onclick="navigate('accueil')">Accueil</span> › Technologie</div>
+    <div class="hero-banner" style="background:linear-gradient(135deg,#0a0a2a 0%,#1a1a5a 100%);min-height:220px;">
+      <div class="hero-overlay" style="background:linear-gradient(to top,rgba(5,5,30,.8) 40%,transparent);"></div>
+      <div class="hero-content"><span class="hero-tag" style="background:#185fa5;">TECHNOLOGIE</span><h2>Numérique & Innovation au Gabon</h2><p>135% taux de pénétration mobile, fibre optique, économie numérique et startups gabonaises.</p></div>
+    </div>
+    <p class="section-label">Sous-rubriques</p>
+    <div class="subcat-grid">
+      <div class="subcat-card"><div class="subcat-icon">📱</div><div class="subcat-name">Télécommunications</div><div class="subcat-desc">Mobile 135%, internet 62%, opérateurs Airtel/Moov/Gabon Telecom.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🌐</div><div class="subcat-name">Internet & Haut débit</div><div class="subcat-desc">Fibre optique SAIL, câble sous-marin, déploiement 4G/5G.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">💻</div><div class="subcat-name">E-gouvernement</div><div class="subcat-desc">Services publics numériques, e-administration, impôts en ligne.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🚀</div><div class="subcat-name">Startups & Innovation</div><div class="subcat-desc">Écosystème startup Libreville, fintech, agritech.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🔬</div><div class="subcat-name">Recherche & Universités</div><div class="subcat-desc">UOB, USTM, recherche scientifique nationale.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">⚡</div><div class="subcat-name">Énergie & Tech verte</div><div class="subcat-desc">Smart grid, accès électricité 88%, transition énergétique.</div><div class="subcat-arrow">Consulter →</div></div>
+    </div>
+    <p class="section-label">Indicateurs numériques</p>
+    <div class="stat-row"><div><h4>Abonnements mobiles</h4><p>Pour 100 habitants, 2024</p></div><div class="stat-val">135%</div></div>
+    <div class="stat-row"><div><h4>Pénétration internet</h4><p>% de la population, 2024</p></div><div class="stat-val">62%</div></div>
+    <div class="stat-row"><div><h4>Accès à l'électricité</h4><p>Population totale</p></div><div class="stat-val">88%</div></div>
+  </div><!-- /technologie -->
+
+  <!-- ══ JURIDIQUE ══ -->
+  <div id="page-juridique" class="subpage">
+    <div class="breadcrumb"><span onclick="navigate('accueil')">Accueil</span> › Publications juridiques</div>
+    <!-- Ministry of Justice hero -->
+    <div class="hero-banner" style="background:linear-gradient(135deg,#2a1a0a 0%,#6a4a1a 100%);min-height:240px;">
+      <div class="hero-overlay" style="background:linear-gradient(to top,rgba(30,15,5,.8) 40%,transparent);"></div>
+      <div class="hero-content">
+        <span class="hero-tag" style="background:#c8a000;color:#1a1a1a;">JURIDIQUE</span>
+        <h2>Ministère de la Justice — Libreville</h2>
+        <p>Journal officiel, lois, décrets, arrêtés et jurisprudence du Gabon. Publications officielles de la République Gabonaise.</p>
+      </div>
+    </div>
+    <p class="section-label">Sous-rubriques</p>
+    <div class="subcat-grid">
+      <div class="subcat-card"><div class="subcat-icon">📰</div><div class="subcat-name">Journal Officiel</div><div class="subcat-desc">Publications du Journal Officiel de la République Gabonaise (JORG).</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">⚖️</div><div class="subcat-name">Lois & Codes</div><div class="subcat-desc">Code civil, pénal, commerce, travail, minier, forestier.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">📜</div><div class="subcat-name">Décrets présidentiels</div><div class="subcat-desc">Décrets signés par la Présidence, nominations officielles.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏛️</div><div class="subcat-name">Jurisprudence</div><div class="subcat-desc">Arrêts de la Cour de Cassation, Conseil d'État, Cour Constitutionnelle.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🤝</div><div class="subcat-name">Traités & Conventions</div><div class="subcat-desc">Accords bilatéraux, conventions internationales ratifiées.</div><div class="subcat-arrow">Consulter →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🏢</div><div class="subcat-name">Droit des affaires</div><div class="subcat-desc">OHADA, création d'entreprise, investissements étrangers.</div><div class="subcat-arrow">Consulter →</div></div>
+    </div>
+    <p class="section-label">Dernières publications officielles</p>
+    <div class="releases">
+      <div class="release-item"><div class="release-date">Avr 2026</div><div class="release-info"><h4>JORG — Décrets de nomination du nouveau gouvernement</h4><p>Nominations ministérielles suite à l'investiture présidentielle</p></div><span class="tag tag-new">Nouveau</span></div>
+      <div class="release-item"><div class="release-date">Mar 2026</div><div class="release-info"><h4>Nouveau Code minier — entrée en vigueur</h4><p>Réforme de la fiscalité minière et des conditions d'exploitation</p></div><span class="tag tag-special">Loi</span></div>
+      <div class="release-item"><div class="release-date">Jan 2026</div><div class="release-info"><h4>Révision du Code du travail gabonais</h4><p>Nouvelles dispositions sur le télétravail et les contrats à durée déterminée</p></div><span class="tag tag-special">Loi</span></div>
+      <div class="release-item"><div class="release-date">Déc 2025</div><div class="release-info"><h4>Constitution de la Quatrième République — texte intégral</h4><p>Promulguée après le référendum constitutionnel de 2024</p></div><span class="tag tag-special">Constitution</span></div>
+    </div>
+  </div><!-- /juridique -->
+
+  <!-- ══ DONNÉES ══ -->
+  <div id="page-donnees" class="subpage">
+    <div class="breadcrumb"><span onclick="navigate('accueil')">Accueil</span> › Données</div>
+    <h2 class="page-title">Données ouvertes</h2>
+    <p class="page-intro">Téléchargez les jeux de données officiels du Gabon en formats CSV, Excel et JSON. Accès libre et gratuit.</p>
+    <p class="section-label">Jeux de données disponibles</p>
+    <div class="subcat-grid">
+      <div class="subcat-card"><div class="subcat-icon">📥</div><div class="subcat-name">PIB trimestriel</div><div class="subcat-desc">Série longue PIB nominal et réel depuis 2000. CSV & XLSX.</div><div class="subcat-arrow">Télécharger →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">📥</div><div class="subcat-name">Indices des prix (IPC)</div><div class="subcat-desc">IPC mensuel par catégorie depuis 2010.</div><div class="subcat-arrow">Télécharger →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">📥</div><div class="subcat-name">Données démographiques</div><div class="subcat-desc">Population par province, âge, sexe — RGPH 2013 + projections.</div><div class="subcat-arrow">Télécharger →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">📥</div><div class="subcat-name">Emploi & Chômage</div><div class="subcat-desc">Enquêtes annuelles 2018–2024.</div><div class="subcat-arrow">Télécharger →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">📥</div><div class="subcat-name">Commerce extérieur</div><div class="subcat-desc">Exports & imports par produit et partenaire, 2010–2024.</div><div class="subcat-arrow">Télécharger →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">📥</div><div class="subcat-name">Couverture forestière</div><div class="subcat-desc">Données satellite, déforestation annuelle 2000–2024.</div><div class="subcat-arrow">Télécharger →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">📥</div><div class="subcat-name">Santé publique</div><div class="subcat-desc">Mortalité, morbidité, couverture vaccinale par province.</div><div class="subcat-arrow">Télécharger →</div></div>
+      <div class="subcat-card"><div class="subcat-icon">🔌</div><div class="subcat-name">API StatGabon</div><div class="subcat-desc">Accès programmatique REST API. Documentation complète.</div><div class="subcat-arrow">Documentation →</div></div>
+    </div>
+    <div class="chart-card">
+      <h3>Programme statistique national 2026</h3>
+      <p class="sub">Publications prévues cette année</p>
+      <div class="releases" style="margin-bottom:0;">
+        <div class="release-item"><div class="release-date">T1 2026</div><div class="release-info"><h4>Enquête sur les conditions de vie des ménages (ECVMG)</h4><p>Pauvreté, inégalités, consommation</p></div><span class="tag tag-upcoming">En cours</span></div>
+        <div class="release-item"><div class="release-date">T2 2026</div><div class="release-info"><h4>Recensement général de la population (RGPH 2026)</h4><p>Données provisoires</p></div><span class="tag tag-upcoming">À venir</span></div>
+        <div class="release-item"><div class="release-date">T3 2026</div><div class="release-info"><h4>Annuaire statistique du Gabon 2025</h4><p>Publication annuelle complète</p></div><span class="tag tag-upcoming">À venir</span></div>
+      </div>
+    </div>
+  </div><!-- /donnees -->
+
+  <!-- ══ SONDAGES ══ -->
+  <div id="page-sondages" class="subpage">
+    <div class="breadcrumb"><span onclick="navigate('accueil')">Accueil</span> › Sondages</div>
+    <h2 class="page-title">Sondages & Enquêtes</h2>
+    <p class="page-intro">Participez aux enquêtes statistiques officielles et aux sondages d'opinion de la DGST. Vos réponses sont anonymes et contribuent aux politiques publiques.</p>
+
+    <!-- Survey 1 -->
+    <div class="survey-card">
+      <h3>Sondage hebdomadaire</h3>
+      <p>Votre avis compte pour orienter les politiques publiques gabonaises.</p>
+      <div class="survey-question" id="sq1">Comment évaluez-vous la situation économique du Gabon en 2025 ?</div>
+      <div id="survey-options-1">
+        <label class="survey-option"><input type="radio" name="s1" value="1"> Très bonne — croissance visible dans la vie quotidienne</label>
+        <label class="survey-option"><input type="radio" name="s1" value="2"> Bonne — amélioration progressive mais insuffisante</label>
+        <label class="survey-option"><input type="radio" name="s1" value="3"> Mitigée — stagnation malgré quelques progrès</label>
+        <label class="survey-option"><input type="radio" name="s1" value="4"> Mauvaise — conditions de vie en détérioration</label>
+      </div>
+      <button class="survey-btn" onclick="submitSurvey(1)">Soumettre mon avis</button>
+      <div class="survey-result" id="survey-result-1">
+        <p style="font-weight:600;margin-bottom:12px;">Résultats actuels (simulés) :</p>
+        <div><span style="font-size:13px;">Très bonne</span><div class="survey-bar-wrap"><div class="survey-bar-fill" style="width:12%;"></div></div><span style="font-size:12px;color:var(--text-3);">12%</span></div>
+        <div><span style="font-size:13px;">Bonne</span><div class="survey-bar-wrap"><div class="survey-bar-fill" style="width:28%;"></div></div><span style="font-size:12px;color:var(--text-3);">28%</span></div>
+        <div><span style="font-size:13px;">Mitigée</span><div class="survey-bar-wrap"><div class="survey-bar-fill" style="width:38%;"></div></div><span style="font-size:12px;color:var(--text-3);">38%</span></div>
+        <div><span style="font-size:13px;">Mauvaise</span><div class="survey-bar-wrap"><div class="survey-bar-fill" style="width:22%;"></div></div><span style="font-size:12px;color:var(--text-3);">22%</span></div>
+        <p style="font-size:12px;color:var(--text-3);margin-top:14px;">1 247 réponses • Sondage ouvert jusqu'au 31 mai 2026</p>
+      </div>
+    </div>
+
+    <!-- Survey 2 -->
+    <div class="survey-card">
+      <h3>Enquête sur l'accès aux services publics</h3>
+      <p>Aidez-nous à améliorer les services de l'État en répondant à cette courte enquête.</p>
+      <div class="survey-question">Quel service public souhaitez-vous voir amélioré en priorité ?</div>
+      <div id="survey-options-2">
+        <label class="survey-option"><input type="radio" name="s2" value="1"> Santé — accès aux soins et médicaments</label>
+        <label class="survey-option"><input type="radio" name="s2" value="2"> Éducation — qualité et accès à l'école</label>
+        <label class="survey-option"><input type="radio" name="s2" value="3"> Eau potable et assainissement</label>
+        <label class="survey-option"><input type="radio" name="s2" value="4"> Routes et transports</label>
+        <label class="survey-option"><input type="radio" name="s2" value="5"> Emploi et formation professionnelle</label>
+      </div>
+      <button class="survey-btn" onclick="submitSurvey(2)">Soumettre mon avis</button>
+      <div class="survey-result" id="survey-result-2">
+        <p style="font-weight:600;margin-bottom:12px;">Résultats actuels (simulés) :</p>
+        <div><span style="font-size:13px;">Santé</span><div class="survey-bar-wrap"><div class="survey-bar-fill" style="width:35%;"></div></div><span style="font-size:12px;color:var(--text-3);">35%</span></div>
+        <div><span style="font-size:13px;">Éducation</span><div class="survey-bar-wrap"><div class="survey-bar-fill" style="width:25%;"></div></div><span style="font-size:12px;color:var(--text-3);">25%</span></div>
+        <div><span style="font-size:13px;">Eau potable</span><div class="survey-bar-wrap"><div class="survey-bar-fill" style="width:15%;"></div></div><span style="font-size:12px;color:var(--text-3);">15%</span></div>
+        <div><span style="font-size:13px;">Routes</span><div class="survey-bar-wrap"><div class="survey-bar-fill" style="width:18%;"></div></div><span style="font-size:12px;color:var(--text-3);">18%</span></div>
+        <div><span style="font-size:13px;">Emploi</span><div class="survey-bar-wrap"><div class="survey-bar-fill" style="width:7%;"></div></div><span style="font-size:12px;color:var(--text-3);">7%</span></div>
+        <p style="font-size:12px;color:var(--text-3);margin-top:14px;">892 réponses • Sondage ouvert</p>
+      </div>
+    </div>
+  </div><!-- /sondages -->
+
+  <!-- ══ CONTACT ══ -->
+  <div id="page-contact" class="subpage">
+    <div class="breadcrumb"><span onclick="navigate('accueil')">Accueil</span> › Contact</div>
+    <h2 class="page-title">Contactez-nous</h2>
+    <p class="page-intro">La Direction Générale de la Statistique est à votre disposition pour toute demande de données, de publications ou de collaboration.</p>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>Direction Générale de la Statistique</h3>
+        <div class="contact-item"><i class="ti ti-map-pin"></i><div><strong>Adresse</strong><br>Avenue du Colonel Parant, Libreville<br>République Gabonaise</div></div>
+        <div class="contact-item"><i class="ti ti-phone"></i><div><strong>Téléphone</strong><br>+241 01 76 29 90</div></div>
+        <div class="contact-item"><i class="ti ti-mail"></i><div><strong>Email</strong><br>contact@statgabon.ga<br>dgst@stat.gouv.ga</div></div>
+        <div class="contact-item"><i class="ti ti-clock"></i><div><strong>Horaires</strong><br>Lundi–Vendredi : 8h00–17h00<br>Samedi : 8h00–12h00</div></div>
+        <div style="margin-top:20px;">
+          <p style="font-size:13px;font-weight:600;margin-bottom:10px;">Suivez-nous</p>
+          <div style="display:flex;gap:12px;">
+            <a href="#" style="font-size:24px;color:var(--green-mid);"><i class="ti ti-brand-facebook"></i></a>
+            <a href="#" style="font-size:24px;color:var(--green-mid);"><i class="ti ti-brand-x"></i></a>
+            <a href="#" style="font-size:24px;color:var(--green-mid);"><i class="ti ti-brand-linkedin"></i></a>
+            <a href="#" style="font-size:24px;color:var(--green-mid);"><i class="ti ti-brand-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <h3>Envoyer un message</h3>
+        <div class="form-row"><label>Nom complet</label><input type="text" placeholder="Jean-Pierre Moussavou"/></div>
+        <div class="form-row"><label>Email</label><input type="email" placeholder="votre@email.com"/></div>
+        <div class="form-row"><label>Sujet</label>
+          <select>
+            <option>Demande de données statistiques</option>
+            <option>Publication officielle</option>
+            <option>Partenariat & Collaboration</option>
+            <option>Erreur ou correction</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="form-row"><label>Message</label><textarea placeholder="Décrivez votre demande…"></textarea></div>
+        <button class="form-submit" onclick="alert('Message envoyé ! Nous vous répondrons sous 48h.')">Envoyer le message</button>
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div class="gabon-map-container">
+      <h4>🗺️ Localisation — Libreville, Gabon</h4>
+      <svg style="max-width:400px;margin:0 auto;display:block;" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="300" fill="#e6f3ff"/>
+        <path d="M 0 80 Q 80 60 150 100 Q 200 120 210 180 Q 220 240 200 300 L 0 300 Z" fill="#c8e6c9" opacity="0.6"/>
+        <circle cx="130" cy="130" r="12" fill="#1a4a2e" opacity="0.9"/>
+        <circle cx="130" cy="130" r="20" fill="#1a4a2e" opacity="0.2"/>
+        <circle cx="130" cy="130" r="30" fill="#1a4a2e" opacity="0.08"/>
+        <text x="148" y="125" font-size="13" font-weight="bold" fill="#1a4a2e" font-family="sans-serif">Libreville</text>
+        <text x="148" y="140" font-size="10" fill="#555" font-family="sans-serif">Capitale du Gabon • 0°23'N, 9°27'E</text>
+        <text x="20" y="250" font-size="9" fill="#185fa5" font-family="sans-serif">Océan Atlantique</text>
+        <text x="200" y="200" font-size="9" fill="#555" font-family="sans-serif">Gabon</text>
+      </svg>
+    </div>
+  </div><!-- /contact -->
+
+</div><!-- /page-wrapper -->
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div class="gabon-flag" style="width:36px;height:24px;"><span style="background:#009A44;"></span><span style="background:#FCD116;"></span><span style="background:#003189;"></span></div>
+        <span style="color:#fff;font-weight:700;font-size:16px;font-family:'Playfair Display',serif;">StatGabon</span>
+      </div>
+      <p style="font-size:12px;line-height:1.6;margin-bottom:12px;">Portail officiel des statistiques de la République Gabonaise. Direction Générale de la Statistique — DGST.</p>
+      <div class="footer-social">
+        <a href="#"><i class="ti ti-brand-facebook"></i></a>
+        <a href="#"><i class="ti ti-brand-x"></i></a>
+        <a href="#"><i class="ti ti-brand-linkedin"></i></a>
+        <a href="#"><i class="ti ti-brand-youtube"></i></a>
+        <a href="#"><i class="ti ti-brand-instagram"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Rubriques</h4>
+      <a href="#" onclick="navigate('economie')">Économie</a>
+      <a href="#" onclick="navigate('politique')">Politique</a>
+      <a href="#" onclick="navigate('marches')">Marchés & Finance</a>
+      <a href="#" onclick="navigate('environnement')">Environnement</a>
+      <a href="#" onclick="navigate('sante')">Santé</a>
+      <a href="#" onclick="navigate('sport')">Sport</a>
+    </div>
+    <div class="footer-col">
+      <h4>Données & Outils</h4>
+      <a href="#" onclick="navigate('donnees')">Données ouvertes</a>
+      <a href="#" onclick="navigate('donnees')">API StatGabon</a>
+      <a href="#" onclick="navigate('juridique')">Publications juridiques</a>
+      <a href="#" onclick="navigate('sondages')">Sondages</a>
+      <a href="#" onclick="navigate('technologie')">Technologie</a>
+      <a href="#" onclick="navigate('monde')">Gabon & Monde</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact & Infos</h4>
+      <a href="#" onclick="navigate('contact')">Nous contacter</a>
+      <a href="#">Accessibilité</a>
+      <a href="#">Politique de confidentialité</a>
+      <a href="#">Mentions légales</a>
+      <a href="#">Plan du site</a>
+      <a href="#">statgabon.ga</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 StatGabon — Direction Générale de la Statistique, République Gabonaise. Tous droits réservés.</span>
+    <span style="font-size:11px;">Données : DGST, Banque Mondiale, FMI, BEAC — Mise à jour : Mai 2026</span>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ── PAGE ACCENT COLORS ──
+const pageAccents = {
+  accueil:      '#1a4a2e',
+  economie:     '#185fa5',
+  politique:    '#003189',
+  marches:      '#854f0b',
+  immobilier:   '#3a5a3a',
+  environnement:'#0f6e56',
+  sante:        '#a32d2d',
+  sport:        '#c8a000',
+  monde:        '#2a2a5e',
+  technologie:  '#185fa5',
+  juridique:    '#6a4a1a',
+  donnees:      '#1a4a2e',
+  sondages:     '#1a4a2e',
+  contact:      '#1a4a2e',
+};
+
+const heroTitles = {
+  accueil:      { fr: 'Données statistiques officielles du Gabon', en: 'Official Statistics of Gabon' },
+  economie:     { fr: 'Économie', en: 'Economy' },
+  politique:    { fr: 'Politique', en: 'Politics' },
+  marches:      { fr: 'Marchés & Finance', en: 'Markets & Finance' },
+  immobilier:   { fr: 'Immobilier', en: 'Real Estate' },
+  environnement:{ fr: 'Environnement', en: 'Environment' },
+  sante:        { fr: 'Santé', en: 'Health' },
+  sport:        { fr: 'Sport', en: 'Sport' },
+  monde:        { fr: 'Monde', en: 'World' },
+  technologie:  { fr: 'Technologie', en: 'Technology' },
+  juridique:    { fr: 'Publications juridiques', en: 'Legal Publications' },
+  donnees:      { fr: 'Données ouvertes', en: 'Open Data' },
+  sondages:     { fr: 'Sondages', en: 'Surveys' },
+  contact:      { fr: 'Contact', en: 'Contact' },
+};
+
+let currentLang = 'fr';
+
+function navigate(pageKey) {
+  document.querySelectorAll('.subpage').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + pageKey);
+  if (target) target.classList.add('active');
+
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.page === pageKey);
+  });
+
+  // Update accent color
+  const accent = pageAccents[pageKey] || '#1a4a2e';
+  document.documentElement.style.setProperty('--page-accent', accent);
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.nav-item').forEach(el => {
+  el.addEventListener('click', () => navigate(el.dataset.page));
+});
+
+// ── LANGUAGE ──
+const translations = {
+  fr: {
+    'Accueil': 'Accueil', 'Économie': 'Économie', 'Politique': 'Politique',
+    'Marchés & Finance': 'Marchés & Finance', 'Immobilier': 'Immobilier',
+    'Environnement': 'Environnement', 'Santé': 'Santé', 'Sport': 'Sport',
+    'Monde': 'Monde', 'Technologie': 'Technologie', 'Publications juridiques': 'Publications juridiques',
+    'Données': 'Données', 'Sondages': 'Sondages', 'Contact': 'Contact',
+    'Indicateurs clés 2024': 'Indicateurs clés 2024',
+    'Dernières publications': 'Dernières publications',
+    'À la une': 'À la une',
+  },
+  en: {
+    'Accueil': 'Home', 'Économie': 'Economy', 'Politique': 'Politics',
+    'Marchés & Finance': 'Markets & Finance', 'Immobilier': 'Real Estate',
+    'Environnement': 'Environment', 'Santé': 'Health', 'Sport': 'Sport',
+    'Monde': 'World', 'Technologie': 'Technology', 'Publications juridiques': 'Legal Publications',
+    'Données': 'Data', 'Sondages': 'Surveys', 'Contact': 'Contact',
+    'Indicateurs clés 2024': 'Key Indicators 2024',
+    'Dernières publications': 'Latest Publications',
+    'À la une': 'Top Stories',
+  }
+};
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+  document.querySelectorAll('.nav-item').forEach(el => {
+    const key = el.textContent.trim();
+    if (translations[lang][key]) el.textContent = translations[lang][key];
+  });
+
+  document.querySelectorAll('[data-fr]').forEach(el => {
+    el.textContent = el.dataset[lang] || el.dataset.fr;
+  });
+
+  document.getElementById('html-root').setAttribute('lang', lang);
+}
+
+// ── POLITICS SLIDESHOW ──
+let currentSlide = 0;
+const slides = document.querySelectorAll('.politics-slide');
+const dots = document.querySelectorAll('.politics-dot');
+
+function showSlide(n) {
+  slides.forEach(s => s.classList.remove('active'));
+  dots.forEach(d => d.classList.remove('active'));
+  currentSlide = (n + slides.length) % slides.length;
+  slides[currentSlide].classList.add('active');
+  dots[currentSlide].classList.add('active');
+}
+
+function prevSlide() { showSlide(currentSlide - 1); }
+function nextSlide() { showSlide(currentSlide + 1); }
+function goSlide(n)  { showSlide(n); }
+
+// Auto-advance every 6 seconds
+setInterval(() => nextSlide(), 6000);
+
+// ── GDP CHART ──
+const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const textCol = dark ? 'rgba(255,255,255,.5)' : 'rgba(0,0,0,.45)';
+const gridCol = dark ? 'rgba(255,255,255,.07)' : 'rgba(0,0,0,.06)';
+
+new Chart(document.getElementById('gdpChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2019','2020','2021','2022','2023','2024'],
+    datasets: [{
+      label: 'Croissance PIB (%)',
+      data: [3.9, -1.8, 1.5, 3.0, 2.4, 3.4],
+      backgroundColor: ['#1a4a2e','#a32d2d','#1a4a2e','#1a4a2e','#1a4a2e','#0f6e56'],
+      borderRadius: 4, borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' '+(c.raw>0?'+':'')+c.raw+'%' }}},
+    scales: {
+      x: { ticks: { color: textCol, font: { size: 11 }}, grid: { display: false }, border: { display: false }},
+      y: { ticks: { color: textCol, font: { size: 11 }, callback: v => v+'%'}, grid: { color: gridCol }, border: { display: false }}
+    }
+  }
+});
+
+// ── SURVEYS ──
+function submitSurvey(id) {
+  const selected = document.querySelector(`input[name="s${id}"]:checked`);
+  if (!selected) { alert('Veuillez choisir une option.'); return; }
+  document.getElementById(`survey-options-${id}`).style.display = 'none';
+  document.querySelector(`#page-sondages .survey-card:nth-child(${id === 1 ? 3 : 4}) .survey-btn`);
+  document.getElementById(`survey-result-${id}`).style.display = 'block';
+  event.target.style.display = 'none';
+}
+</script>
+</body>
+</html>
